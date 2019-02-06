@@ -29,13 +29,13 @@ class Quote{
     private Double open;
     @SerializedName("openTime")
     @Expose
-    private Long openTime;
+    private Double openTime;
     @SerializedName("close")
     @Expose
     private Double close;
     @SerializedName("closeTime")
     @Expose
-    private Long closeTime;
+    private Double closeTime;
     @SerializedName("high")
     @Expose
     private Double high;
@@ -53,25 +53,25 @@ class Quote{
     private String latestTime;
     @SerializedName("latestUpdate")
     @Expose
-    private Long latestUpdate;
+    private Double latestUpdate;
     @SerializedName("latestVolume")
     @Expose
-    private Long latestVolume;
+    private Double latestVolume;
     @SerializedName("iexRealtimePrice")
     @Expose
     private Double iexRealtimePrice;
     @SerializedName("iexRealtimeSize")
     @Expose
-    private Long iexRealtimeSize;
+    private Double iexRealtimeSize;
     @SerializedName("iexLastUpdated")
     @Expose
-    private Long iexLastUpdated;
+    private Double iexLastUpdated;
     @SerializedName("delayedPrice")
     @Expose
     private Double delayedPrice;
     @SerializedName("delayedPriceTime")
     @Expose
-    private Long delayedPriceTime;
+    private Double delayedPriceTime;
     @SerializedName("extendedPrice")
     @Expose
     private Double extendedPrice;
@@ -83,7 +83,7 @@ class Quote{
     private Double extendedChangePercent;
     @SerializedName("extendedPriceTime")
     @Expose
-    private Long extendedPriceTime;
+    private Double extendedPriceTime;
     @SerializedName("previousClose")
     @Expose
     private Double previousClose;
@@ -98,25 +98,25 @@ class Quote{
     private Double iexMarketPercent;
     @SerializedName("iexVolume")
     @Expose
-    private Long iexVolume;
+    private Double iexVolume;
     @SerializedName("avgTotalVolume")
     @Expose
-    private Long avgTotalVolume;
+    private Double avgTotalVolume;
     @SerializedName("iexBidPrice")
     @Expose
-    private Long iexBidPrice;
+    private Double iexBidPrice;
     @SerializedName("iexBidSize")
     @Expose
-    private Long iexBidSize;
+    private Double iexBidSize;
     @SerializedName("iexAskPrice")
     @Expose
-    private Long iexAskPrice;
+    private Double iexAskPrice;
     @SerializedName("iexAskSize")
     @Expose
-    private Long iexAskSize;
+    private Double iexAskSize;
     @SerializedName("marketCap")
     @Expose
-    private Long marketCap;
+    private Double marketCap;
     @SerializedName("peRatio")
     @Expose
     private Double peRatio;

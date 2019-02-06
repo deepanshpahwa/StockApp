@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         IEXtradingAPI IEXtradingAPI = retrofit.create(IEXtradingAPI.class);
 
-        Call<Map<String, Symbol>> call = IEXtradingAPI.getDailyStockBatch("quote", "MSFT");//TODO
+        Call<Map<String, Symbol>> call = IEXtradingAPI.getDailyStockBatch("quote", "MSFT,AAPL");//TODO
 
         call.enqueue(new Callback<Map<String, Symbol>>() {
             @Override
