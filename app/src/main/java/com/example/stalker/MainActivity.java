@@ -8,8 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
+import com.example.stalker.Bean.Quote;
 import com.example.stalker.Bean.Symbol;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
 //    private ArrayList<Map<String, Symbol>> stocks = new ArrayList<>();
-    private Map<String, Symbol> stocksMAP = new HashMap<>();
+     Map<String, Symbol> stocksMAP = new HashMap<>();
 
 
     @Override
@@ -38,16 +40,18 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rvStocks = (RecyclerView) findViewById(R.id.rvStocks);
         //stocks = //get through API
 
-        populateStockListArray();
+        populateStockListArray(rvStocks);
+        if (stocksMAP.isEmpty()) System.out.print("::::::::stocks is empty");
 //        Stock stock = new Stock();
 //        stock.setStockCode("NFLX");
 //        stock.setMACD(100d);
 //        stock.setStockPrice("10000");
 //        stock.setTimeStamp("today");
 //        stocks.add(stock);
-        StockRvAdapter adapter = new StockRvAdapter(stocksMAP);
-        rvStocks.setAdapter(adapter);
-        rvStocks.setLayoutManager(new LinearLayoutManager(this));
+
+//        rvStocks.setLayoutManager(new LinearLayoutManager(this));
+//        StockRvAdapter adapter = new StockRvAdapter(stocksMAP);
+//        rvStocks.setAdapter(adapter);
 
 
 
@@ -56,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void populateStockListArray() {
+    private void populateStockListArray(final RecyclerView rvStocks) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.iextrading.com/1.0/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         IEXtradingAPI IEXtradingAPI = retrofit.create(IEXtradingAPI.class);
 
         Call<Map<String, Symbol>> call = IEXtradingAPI.getDailyStockBatch("quote", "MSFT");//TODO
+//        Map<String, Symbol> ret = call.execute().body();
 
         call.enqueue(new Callback<Map<String, Symbol>>() {
             @Override
@@ -71,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     System.out.println("::::::::::::::::::::onResponse is successful" + response);
                     stocksMAP = response.body();
+                    Symbol temp = stocksMAP.get("MSFT");
+                    Quote temp2 = temp.getQuote();
+                    temp2.getCompanyName();
+
+                    rvStocks.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    StockRvAdapter adapter = new StockRvAdapter(stocksMAP);
+                    rvStocks.setAdapter(adapter);
+
+//                    stocksMAP
                 }else{
                     System.out.println("::::::::::::::::::::onResponse not successful" + response);
                 }
@@ -83,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     @Override

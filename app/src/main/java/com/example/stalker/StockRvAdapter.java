@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHolder> {
     private Map<String, Symbol> stocks;
+
     public StockRvAdapter(Map<String, Symbol> stocks) {
         this.stocks = stocks;
     }
@@ -21,6 +22,7 @@ public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -33,9 +35,9 @@ public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        Symbol stock = stocks.get(position);
+        String stockName =  stocks.get("MSFT").getQuote().getCompanyName();
         TextView textView = viewHolder.stockNameTv;
-//        textView.setText(stock.getStockCode());
+        textView.setText(stockName);
 
 
 
@@ -44,7 +46,7 @@ public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return stocks.size();
+        return 1;//stocks.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -54,7 +56,7 @@ public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHold
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
-            stockNameTv = (TextView) itemView.findViewById(R.id.stock_name_tv);
+            stockNameTv = itemView.findViewById(R.id.stock_name_tv);
 
         }
     }
