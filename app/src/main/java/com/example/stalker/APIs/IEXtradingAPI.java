@@ -1,4 +1,4 @@
-package com.example.stalker;
+package com.example.stalker.APIs;
 
 
 import com.example.stalker.Bean.Symbol;
@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 
 public interface IEXtradingAPI {
     @GET("stock/market/batch")
-    Call <Map<String, Symbol>> getDailyStockBatch(@Query("types") String types, @Query("symbols") String symbol);//change post
+    Call <Map<String, Symbol>> getDailyStockBatch(@Query("types") String types, @Query("symbols") String symbol);//TODO change post
 
 
 }

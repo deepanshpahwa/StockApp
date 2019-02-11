@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Stalker</string>
     <string name="settings">settings</string>
-    <string name="favorite">favorite</string>
+    <string name="favorite">favorites</string>
+    <string name="search_hint">MSFT</string>
+    <string name="app_label">Stock App</string>
+    <string name="IEXtradingAPI_BaseURL">https://api.iextrading.com/1.0/</string>
 </resources>

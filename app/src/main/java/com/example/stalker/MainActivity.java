@@ -1,5 +1,6 @@
 package com.example.stalker;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +8,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 
+import com.example.stalker.APIs.IEXtradingAPI;
 import com.example.stalker.Bean.Quote;
 import com.example.stalker.Bean.Symbol;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,42 +35,60 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //setting the toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
 
         RecyclerView rvStocks = (RecyclerView) findViewById(R.id.rvStocks);
-        //stocks = //get through API
 
-        populateStockListArray(rvStocks);
+        ArrayList<String> favoriteStocks = new ArrayList<>();
+        favoriteStocks.add("AAPL");
+        favoriteStocks.add("NFLX");
+        favoriteStocks.add("MSFT");
+        favoriteStocks.add("AMZN");
+        favoriteStocks.add("GOOGL");
+        favoriteStocks.add("TWTR");
+        favoriteStocks.add("TSLA");
+        favoriteStocks.add("FB");
+        favoriteStocks.add("GPRO");
+
+
+//        Menu navmen = myToolbar.getMenu();
+//        MenuItem favoriteButton = navmen.findItem(R.id.favorites).setVisible(true);
+//        favoriteButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                Intent intent = new Intent(MainActivity.this, FavoriteStocks.class);
+//                MainActivity.this.startActivity(intent);
+//                return true;
+//            }
+//        });
+
+        populateStockListArray(rvStocks, favoriteStocks);
+
+        //just a check
         if (stocksMAP.isEmpty()) System.out.print("::::::::stocks is empty");
-//        Stock stock = new Stock();
-//        stock.setStockCode("NFLX");
-//        stock.setMACD(100d);
-//        stock.setStockPrice("10000");
-//        stock.setTimeStamp("today");
-//        stocks.add(stock);
-
-//        rvStocks.setLayoutManager(new LinearLayoutManager(this));
-//        StockRvAdapter adapter = new StockRvAdapter(stocksMAP);
-//        rvStocks.setAdapter(adapter);
-
-
-
-
 
 
     }
 
-    private void populateStockListArray(final RecyclerView rvStocks) {
+    private void populateStockListArray(final RecyclerView rvStocks, final ArrayList<String> favoriteStocks) {
+
+        StringBuilder stringOfStocks = new StringBuilder();
+        for (String stock: favoriteStocks){
+            stringOfStocks.append(stock);
+            stringOfStocks.append(",");
+        }
+        stringOfStocks.replace(stringOfStocks.length()-1,stringOfStocks.length(),"");
+
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.iextrading.com/1.0/")
+                .baseUrl(getString(R.string.IEXtradingAPI_BaseURL))
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         IEXtradingAPI IEXtradingAPI = retrofit.create(IEXtradingAPI.class);
 
-        Call<Map<String, Symbol>> call = IEXtradingAPI.getDailyStockBatch("quote", "MSFT");//TODO
+        Call<Map<String, Symbol>> call = IEXtradingAPI.getDailyStockBatch("quote", stringOfStocks.toString());//TODO
 //        Map<String, Symbol> ret = call.execute().body();
 
         call.enqueue(new Callback<Map<String, Symbol>>() {
@@ -81,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     temp2.getCompanyName();
 
                     rvStocks.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    StockRvAdapter adapter = new StockRvAdapter(stocksMAP);
+                    StockRvAdapter adapter = new StockRvAdapter(stocksMAP, favoriteStocks);
                     rvStocks.setAdapter(adapter);
 
 //                    stocksMAP
@@ -102,8 +123,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
+        menu.clear();
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return super.onCreateOptionsMenu(menu);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.favorites:
+                Intent intent = new Intent(MainActivity.this, FavoriteStocks.class);
+                MainActivity.this.startActivity(intent);
+            case R.id.settings:
+                //open the settings page
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
