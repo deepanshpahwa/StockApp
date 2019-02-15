@@ -10,7 +10,7 @@ public class ListOfBestMatches {
 
     @SerializedName("bestMatches")
     @Expose
-    private List<BestMatch> bestMatches = null;
+    private List<BestMatch> bestMatches;
 
     public List<BestMatch> getBestMatches() {
         return bestMatches;
