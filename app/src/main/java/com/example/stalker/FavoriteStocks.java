@@ -106,7 +106,7 @@ public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQu
 
     @Override
     public boolean onQueryTextChange(String s) {
-//        onQueryTextSubmit(s);
+        onQueryTextSubmit(s);
         return true;
     }
 }

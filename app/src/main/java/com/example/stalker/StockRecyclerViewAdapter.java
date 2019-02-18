@@ -34,7 +34,8 @@ class StockRecyclerViewAdapter  extends RecyclerView.Adapter<StockRecyclerViewAd
     @Override
     public void onBindViewHolder(@NonNull  ViewHolder viewHolder, int position) {
         BestMatch stockName = mData.getBestMatches().get(position);
-        viewHolder.stockNameTv.setText(stockName.get1Symbol());    }
+        viewHolder.stockNameAbbrTv.setText(stockName.get1Symbol());
+        viewHolder.stockNameTv.setText(stockName.get2Name());}
 
     @Override
     public int getItemCount() {
@@ -42,11 +43,13 @@ class StockRecyclerViewAdapter  extends RecyclerView.Adapter<StockRecyclerViewAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView stockNameTv;
+        TextView stockNameAbbrTv,stockNameTv;
 
         ViewHolder(View itemView) {
             super(itemView);
-            stockNameTv = itemView.findViewById(R.id.stockname_tv);
+            stockNameAbbrTv = itemView.findViewById(R.id.stockname_abbr_tv);
+             stockNameTv = itemView.findViewById(R.id.stockname_tv);
+
             itemView.setOnClickListener(this);
         }
 
