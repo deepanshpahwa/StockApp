@@ -42,7 +42,7 @@ public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQu
     private void attachAdapterAndPopulateRV() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvAdapter = new StockRecyclerViewAdapter(getApplicationContext(), listOfBestMatches );
-//         rvAdaptersetclicklistener(this);//TODO
+//         rvAdapter.setclicklistener(this);//TODO
         recyclerView.setAdapter(rvAdapter);
     }
 

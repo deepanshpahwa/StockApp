@@ -4,14 +4,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.stalker.APIs.IEXtradingAPI;
-import com.example.stalker.Bean.Quote;
 import com.example.stalker.Bean.Symbol;
 
 import java.util.ArrayList;
@@ -24,10 +23,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements StockRvAdapter.ItemClickListener{
 
 //    private ArrayList<Map<String, Symbol>> stocks = new ArrayList<>();
-     Map<String, Symbol> stocksMAP = new HashMap<>();
+    Map<String, Symbol> stocksMAP = new HashMap<>();
+    StockRvAdapter adapter;
+    RecyclerView rvStocks;
+    ArrayList<String> favoriteStocks;
 
 
     @Override
@@ -39,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         myToolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
 
-        RecyclerView rvStocks = (RecyclerView) findViewById(R.id.rvStocks);
 
-        ArrayList<String> favoriteStocks = new ArrayList<>();
+
+        rvStocks = (RecyclerView) findViewById(R.id.rvStocks);
+
+        favoriteStocks = new ArrayList<>();
         favoriteStocks.add("AAPL");
         favoriteStocks.add("NFLX");
         favoriteStocks.add("MSFT");
@@ -63,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 //                return true;
 //            }
 //        });
-
         populateStockListArray(rvStocks, favoriteStocks);
 
         //just a check
@@ -97,13 +100,12 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     System.out.println("::::::::::::::::::::onResponse is successful" + response);
                     stocksMAP = response.body();
-                    Symbol temp = stocksMAP.get("MSFT");
-                    Quote temp2 = temp.getQuote();
-                    temp2.getCompanyName();
 
-                    rvStocks.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    StockRvAdapter adapter = new StockRvAdapter(stocksMAP, favoriteStocks);
+//                    rvStocks.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    adapter = new StockRvAdapter(stocksMAP, favoriteStocks);
+                    adapter.setClickListener(MainActivity.this);
                     rvStocks.setAdapter(adapter);
+
 
 //                    stocksMAP
                 }else{
@@ -140,5 +142,20 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    @Override
+    public void onItemClick(View view, int position) {
+        new StockDetailActivity(MainActivity.this, "MSFT");//TODO
+        //get item using the position and the array list
+//        MainActivity.this.startActivity(intent);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateStockListArray( rvStocks, favoriteStocks);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.stalker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,9 +14,12 @@ import com.example.stalker.Bean.Symbol;
 import java.util.ArrayList;
 import java.util.Map;
 
+import retrofit2.Callback;
+
 public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHolder> {
     private final ArrayList<String> favoriteStocks;
     private Map<String, Symbol> stocks;
+    private ItemClickListener mClickListener;
 
     public StockRvAdapter(Map<String, Symbol> stocks, ArrayList<String> favoriteStocks) {
         this.stocks = stocks;
@@ -66,7 +70,7 @@ public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHold
         return favoriteStocks.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView stockNameTv, stockSymbolTv, stockPriceTv;
 
         public ViewHolder(View itemView) {
@@ -78,7 +82,24 @@ public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHold
             stockPriceTv = itemView.findViewById(R.id.stock_price_tv);
 
 
+
         }
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+        }
+
+    }
+
+    // allows clicks events to be caught
+    void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
     }
 
     }
