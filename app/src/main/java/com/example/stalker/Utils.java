@@ -1,8 +1,10 @@
 package com.example.stalker;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 public class Utils {
 
@@ -17,4 +19,7 @@ public class Utils {
         activity.setSupportActionBar(toolbar);
     }
 
+    public static void makeToast(Context context, String new_favorite_added) {
+        Toast.makeText(context,new_favorite_added,Toast.LENGTH_SHORT).show();
+    }
 }

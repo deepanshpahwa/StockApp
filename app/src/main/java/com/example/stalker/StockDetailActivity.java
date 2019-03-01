@@ -9,12 +9,18 @@ import android.widget.TextView;
 
 public class StockDetailActivity extends AppCompatActivity {
 
-    private final String stockName;
+    private String stockName;
 
-    StockDetailActivity(Activity activity, String stockName ){
-        Intent intent = new Intent(activity, this.getClass());
-        activity.startActivity(intent);
+
+    public StockDetailActivity( String stockName ){
         this.stockName = stockName;
+    }
+    public StockDetailActivity(  ){
+    }
+
+    public Intent getIntent(Activity activity){
+        Intent intent = new Intent(activity, this.getClass());
+        return intent;
     }
 
     @Override

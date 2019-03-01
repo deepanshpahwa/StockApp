@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
         myToolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
 
 
-
         rvStocks = (RecyclerView) findViewById(R.id.rvStocks);
 
         favoriteStocks = new ArrayList<>();
@@ -56,22 +56,7 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
         favoriteStocks.add("FB");
         favoriteStocks.add("GPRO");
 
-
-//        Menu navmen = myToolbar.getMenu();
-//        MenuItem favoriteButton = navmen.findItem(R.id.favorites).setVisible(true);
-//        favoriteButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                Intent intent = new Intent(MainActivity.this, FavoriteStocks.class);
-//                MainActivity.this.startActivity(intent);
-//                return true;
-//            }
-//        });
         populateStockListArray(rvStocks, favoriteStocks);
-
-        //just a check
-        if (stocksMAP.isEmpty()) System.out.print("::::::::stocks is empty");
-
 
     }
 
@@ -98,10 +83,10 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
             @Override
             public void onResponse(Call<Map<String, Symbol>> call, Response<Map<String, Symbol>> response) {
                 if (response.isSuccessful()) {
-                    System.out.println("::::::::::::::::::::onResponse is successful" + response);
+                    Utils.print("onResponse is successful: "+response);
                     stocksMAP = response.body();
 
-//                    rvStocks.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    rvStocks.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     adapter = new StockRvAdapter(stocksMAP, favoriteStocks);
                     adapter.setClickListener(MainActivity.this);
                     rvStocks.setAdapter(adapter);
@@ -109,15 +94,14 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
 
 //                    stocksMAP
                 }else{
-                    System.out.println("::::::::::::::::::::onResponse not successful" + response);
+                    Utils.print("onResponse not successful: " + response);
                 }
 
             }
 
             @Override
             public void onFailure(Call<Map<String, Symbol>> call, Throwable t) {
-                System.out.println("::::::::::::::::::::onFailure"+t.getMessage());
-
+                Utils.print("onFailure: "+t.getMessage());
             }
         });
 
@@ -147,9 +131,11 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
 
     @Override
     public void onItemClick(View view, int position) {
-        new StockDetailActivity(MainActivity.this, "MSFT");//TODO
+        Utils.print("onItemClick: "+position);
+        StockDetailActivity stockDetailActivity = new StockDetailActivity("MSFT");//TODO
+        Intent intent = stockDetailActivity.getIntent(MainActivity.this);
+        MainActivity.this.startActivity(intent);
         //get item using the position and the array list
-//        MainActivity.this.startActivity(intent);
 
     }
 

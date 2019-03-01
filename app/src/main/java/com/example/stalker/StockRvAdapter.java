@@ -1,7 +1,6 @@
 package com.example.stalker;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,14 +13,12 @@ import com.example.stalker.Bean.Symbol;
 import java.util.ArrayList;
 import java.util.Map;
 
-import retrofit2.Callback;
-
 public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHolder> {
     private final ArrayList<String> favoriteStocks;
     private Map<String, Symbol> stocks;
     private ItemClickListener mClickListener;
 
-    public StockRvAdapter(Map<String, Symbol> stocks, ArrayList<String> favoriteStocks) {
+    StockRvAdapter(Map<String, Symbol> stocks, ArrayList<String> favoriteStocks) {
         this.stocks = stocks;
         this.favoriteStocks = favoriteStocks;
     }
@@ -35,9 +32,11 @@ public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHold
 
         View contactView = inflater.inflate(R.layout.item_stock, viewGroup, false);
 
-        // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(contactView);
-        return viewHolder;
+//        // Return a new holder instance
+//        ViewHolder viewHolder = new ViewHolder(contactView);
+//        return viewHolder;
+            return new ViewHolder(contactView);
+
     }
 
     @Override
@@ -71,15 +70,16 @@ public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView stockNameTv, stockSymbolTv, stockPriceTv;
+         TextView stockNameTv, stockSymbolTv, stockPriceTv;
 
-        public ViewHolder(View itemView) {
+         ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
             stockNameTv = itemView.findViewById(R.id.stock_name_tv);
             stockSymbolTv = itemView.findViewById(R.id.stock_symbol_tv);
             stockPriceTv = itemView.findViewById(R.id.stock_price_tv);
+            itemView.setOnClickListener(this);
 
 
 
@@ -87,13 +87,19 @@ public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHold
 
         @Override
         public void onClick(View view) {
+            Utils.print("onClick");
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
 
     }
 
+    Symbol getItem(String sName) {
+        return stocks.get(sName);
+    }
+
     // allows clicks events to be caught
     void setClickListener(ItemClickListener itemClickListener) {
+        Utils.print("setclickListener");
         this.mClickListener = itemClickListener;
     }
 
