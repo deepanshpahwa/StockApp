@@ -8,19 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.stalker.Bean.RealmObjectListOfFavStocks;
 import com.example.stalker.Bean.Symbol;
 
-import java.util.ArrayList;
 import java.util.Map;
 
+import io.realm.RealmList;
+
 public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHolder> {
-    private final ArrayList<String> favoriteStocks;
+    private final RealmList<String> favoriteStocks;
     private Map<String, Symbol> stocks;
     private ItemClickListener mClickListener;
 
-    StockRvAdapter(Map<String, Symbol> stocks, ArrayList<String> favoriteStocks) {
+    StockRvAdapter(Map<String, Symbol> stocks, RealmObjectListOfFavStocks favoriteStocks) {
         this.stocks = stocks;
-        this.favoriteStocks = favoriteStocks;
+        this.favoriteStocks = favoriteStocks.getList();
     }
 
     @NonNull

@@ -20,7 +20,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQueryTextListener  {
 
     StockRecyclerViewAdapter rvAdapter ;
     ListOfBestMatches listOfBestMatches = null;
@@ -36,6 +36,7 @@ public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQu
         myToolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
 
         recyclerView = findViewById(R.id.stock_rv);
+
 
     }
 
@@ -90,7 +91,7 @@ public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQu
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Search People");
         searchView.setOnQueryTextListener(this);
-        searchView.setIconified(false);
+        searchView.setIconified(true);
 
         return super.onCreateOptionsMenu(menu);
 
@@ -99,14 +100,18 @@ public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQu
 
     @Override
     public boolean onQueryTextSubmit(String s) {
-        doMySearch(s);
-        Toast.makeText(this, "Query Inserted", Toast.LENGTH_SHORT).show();
+        if (s.length()!=0) {
+            doMySearch(s);
+        }
+//        Toast.makeText(this, "Query Inserted", Toast.LENGTH_SHORT).show();
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String s) {
-        onQueryTextSubmit(s);
+        if (s.length()!=0) {
+            onQueryTextSubmit(s);
+        }
         return true;
     }
 }

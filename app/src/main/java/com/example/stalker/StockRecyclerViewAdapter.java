@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.example.stalker.Bean.BestMatch;
 import com.example.stalker.Bean.ListOfBestMatches;
+import com.example.stalker.Bean.RealmObjectListOfFavStocks;
+
+import io.realm.Realm;
 
 class StockRecyclerViewAdapter  extends RecyclerView.Adapter<StockRecyclerViewAdapter.ViewHolder> {
     private final LayoutInflater mInflater;
@@ -36,7 +39,7 @@ class StockRecyclerViewAdapter  extends RecyclerView.Adapter<StockRecyclerViewAd
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
-        BestMatch stockName = mData.getBestMatches().get(position);
+        final BestMatch stockName = mData.getBestMatches().get(position);
         viewHolder.stockNameAbbrTv.setText(stockName.get1Symbol());
         viewHolder.stockNameTv.setText(stockName.get2Name());
         //Do realm stuff and check if the stock is already favorited.
@@ -44,8 +47,24 @@ class StockRecyclerViewAdapter  extends RecyclerView.Adapter<StockRecyclerViewAd
         viewHolder.favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Realm realm = Realm.getDefaultInstance();
 //                v.favoriteButton.setCompoundDrawablesWithIntrinsicBounds(drawable.);
-                Utils.makeToast(context,"New Favorite added");
+                boolean stockInFavorite = realm.where(RealmObjectListOfFavStocks.class).findFirst().getList().contains(stockName.get1Symbol());
+                if (stockInFavorite) {
+                    Utils.makeToast(context, "Favorite removed");
+                    realm.beginTransaction();
+                    realm.where(RealmObjectListOfFavStocks.class).findFirst().getList().remove(stockName.get1Symbol());
+                    realm.commitTransaction();
+                }else {
+                    Utils.makeToast(context, "New Favorite added");
+                    realm.beginTransaction();
+                    realm.where(RealmObjectListOfFavStocks.class).findFirst().getList().add(stockName.get1Symbol());
+                    realm.commitTransaction();
+                }
+                realm.close();
+
+
+
             }
         });
     }

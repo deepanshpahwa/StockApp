@@ -1,5 +1,6 @@
 package com.example.stalker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,12 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.stalker.APIs.IEXtradingAPI;
+import com.example.stalker.Bean.RealmObjectListOfFavStocks;
 import com.example.stalker.Bean.Symbol;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,13 +32,21 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
     Map<String, Symbol> stocksMAP = new HashMap<>();
     StockRvAdapter adapter;
     RecyclerView rvStocks;
-    ArrayList<String> favoriteStocks;
+    private Context context;
+//    RealmObjectListOfFavStocks realmObjectListOfFavStocks = new RealmObjectListOfFavStocks();
+    Realm realm;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = this.getApplicationContext();
+
+
+        Realm.init(context);
+        realm = Realm.getDefaultInstance();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -45,25 +55,37 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
 
         rvStocks = (RecyclerView) findViewById(R.id.rvStocks);
 
-        favoriteStocks = new ArrayList<>();
-        favoriteStocks.add("AAPL");
-        favoriteStocks.add("NFLX");
-        favoriteStocks.add("MSFT");
-        favoriteStocks.add("AMZN");
-        favoriteStocks.add("GOOGL");
-        favoriteStocks.add("TWTR");
-        favoriteStocks.add("TSLA");
-        favoriteStocks.add("FB");
-        favoriteStocks.add("GPRO");
 
-        populateStockListArray(rvStocks, favoriteStocks);
+//        favoriteStocks.add(new RealmObjectStock("AAPL"));
+//        favoriteStocks.add(new RealmObjectStock("NFLX"));
+//        favoriteStocks.add(new RealmObjectStock("MSFT"));
+//        favoriteStocks.add(new RealmObjectStock("AMZN"));
+//        favoriteStocks.add(new RealmObjectStock("GOOGL"));
+//        favoriteStocks.add(new RealmObjectStock("TWTR"));
+//        favoriteStocks.add(new RealmObjectStock("TSLA"));
+//        favoriteStocks.add(new RealmObjectStock("FB"));
+//        favoriteStocks.add(new RealmObjectStock("GPRO"));
+
+
+        realm.beginTransaction();
+        RealmObjectListOfFavStocks object = realm.createObject(RealmObjectListOfFavStocks.class);
+        if(object.isValid()){
+            object.getList().add("AAPL");
+            object.getList().add("NFLX");
+        }
+        realm.commitTransaction();
+//        realm.close();
+
+
+        populateStockListArray(rvStocks);
 
     }
 
-    private void populateStockListArray(final RecyclerView rvStocks, final ArrayList<String> favoriteStocks) {
+    private void populateStockListArray(final RecyclerView rvStocks) {
+        final RealmObjectListOfFavStocks favoriteStocks = realm.where(RealmObjectListOfFavStocks.class).findFirst();
 
         StringBuilder stringOfStocks = new StringBuilder();
-        for (String stock: favoriteStocks){
+        for (String stock: favoriteStocks.getList()){
             stringOfStocks.append(stock);
             stringOfStocks.append(",");
         }
@@ -77,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
         IEXtradingAPI IEXtradingAPI = retrofit.create(IEXtradingAPI.class);
 
         Call<Map<String, Symbol>> call = IEXtradingAPI.getDailyStockBatch("quote", stringOfStocks.toString());//TODO
-//        Map<String, Symbol> ret = call.execute().body();
 
         call.enqueue(new Callback<Map<String, Symbol>>() {
             @Override
@@ -142,6 +163,6 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
     @Override
     protected void onResume() {
         super.onResume();
-        populateStockListArray( rvStocks, favoriteStocks);
+        populateStockListArray( rvStocks);
     }
 }
