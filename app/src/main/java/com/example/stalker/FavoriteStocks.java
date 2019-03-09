@@ -89,9 +89,9 @@ public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQu
         MenuItem searchItem = menu.findItem(R.id.search);
 
         SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Search People");
+        searchView.setQueryHint("Search Stocks");
         searchView.setOnQueryTextListener(this);
-        searchView.setIconified(true);
+        searchView.setIconified(false);
 
         return super.onCreateOptionsMenu(menu);
 
