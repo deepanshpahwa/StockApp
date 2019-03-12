@@ -153,8 +153,14 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
     @Override
     public void onItemClick(View view, int position) {
         Utils.print("onItemClick: "+position);
-        StockDetailActivity stockDetailActivity = new StockDetailActivity("MSFT");//TODO
+
+        final RealmObjectListOfFavStocks favoriteStocks = realm.where(RealmObjectListOfFavStocks.class).findFirst();
+        String stockAbbr = favoriteStocks.getList().get(position);
+
+        StockDetailActivity stockDetailActivity = new StockDetailActivity();//TODO
         Intent intent = stockDetailActivity.getIntent(MainActivity.this);
+        intent.putExtra("companyAbbr",stockAbbr);
+        intent.putExtra("companyName",adapter.getItem(stockAbbr).getQuote().getCompanyName());
         MainActivity.this.startActivity(intent);
         //get item using the position and the array list
 

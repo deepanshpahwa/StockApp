@@ -2,6 +2,7 @@ package com.example.stalker;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ public class Utils {
     static void setToolbar(AppCompatActivity activity) {
         activity.setContentView(R.layout.activity_stock_detail);
         Toolbar toolbar = activity.findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
         activity.setSupportActionBar(toolbar);
     }
 
