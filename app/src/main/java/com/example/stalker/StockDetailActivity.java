@@ -3,7 +3,9 @@ package com.example.stalker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.stalker.APIs.AlphaVantageAPI;
@@ -85,7 +87,12 @@ public class StockDetailActivity extends AppCompatActivity {
                     indicator1Tv.setText("MACD");
                     indicator2ValueTv.setText("NA");
 
-                    indicator1ValueTv.setText(response.body().getMap().get("2019-03-05").getMACD());
+                    TechnicalData macdValues = response.body().getMap().get("2019-03-05");
+                    if (macdValues!=null) {
+                        indicator1ValueTv.setText(macdValues.getMACD());
+                    }else{
+                        Utils.makeSnackBar(findViewById(R.id.coordinatorLayout),"There was an error getting information on this stock", Snackbar.LENGTH_LONG);
+                    }
 
 //                Utils.print(data.getMACD()+", "+data.getMACDSignal());
                 }

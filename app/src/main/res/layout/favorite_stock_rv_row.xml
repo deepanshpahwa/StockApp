@@ -40,9 +40,10 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text="NFLX" />
 
-    <Button
+    <ImageButton
         android:id="@+id/favorite_button"
-        android:icon="@drawable/ic_favorite_border_black_24dp"
+        android:src="@drawable/ic_favorite_black_24dp"
+        android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
