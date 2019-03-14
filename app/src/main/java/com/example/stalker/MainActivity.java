@@ -26,11 +26,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements StockRvAdapter.ItemClickListener{
+public class MainActivity extends AppCompatActivity implements MainActivityRVAdapter.ItemClickListener{
 
 //    private ArrayList<Map<String, Symbol>> stocks = new ArrayList<>();
     Map<String, Symbol> stocksMAP = new HashMap<>();
-    StockRvAdapter adapter;
+    MainActivityRVAdapter adapter;
     RecyclerView rvStocks;
     private Context context;
 //    RealmObjectListOfFavStocks realmObjectListOfFavStocks = new RealmObjectListOfFavStocks();
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements StockRvAdapter.It
                     stocksMAP = response.body();
 
                     rvStocks.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    adapter = new StockRvAdapter(stocksMAP, favoriteStocks);
+                    adapter = new MainActivityRVAdapter(stocksMAP, favoriteStocks);
                     adapter.setClickListener(MainActivity.this);
                     rvStocks.setAdapter(adapter);
 

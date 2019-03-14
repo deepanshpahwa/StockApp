@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.stalker.APIs.AlphaVantageAPI;
 import com.example.stalker.Bean.ListOfBestMatches;
@@ -22,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQueryTextListener  {
 
-    StockRecyclerViewAdapter rvAdapter ;
+    FavoriteStocksRVAdapter rvAdapter ;
     ListOfBestMatches listOfBestMatches = null;
     RecyclerView recyclerView;
 
@@ -42,7 +41,7 @@ public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQu
 
     private void attachAdapterAndPopulateRV() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        rvAdapter = new StockRecyclerViewAdapter(getApplicationContext(), listOfBestMatches );
+        rvAdapter = new FavoriteStocksRVAdapter(getApplicationContext(), listOfBestMatches );
 //         rvAdapter.setclicklistener(this);//TODO
         recyclerView.setAdapter(rvAdapter);
     }

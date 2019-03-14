@@ -15,12 +15,12 @@ import java.util.Map;
 
 import io.realm.RealmList;
 
-public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHolder> {
+public class MainActivityRVAdapter extends RecyclerView.Adapter<MainActivityRVAdapter.ViewHolder> {
     private final RealmList<String> favoriteStocks;
     private Map<String, Symbol> stocks;
     private ItemClickListener mClickListener;
 
-    StockRvAdapter(Map<String, Symbol> stocks, RealmObjectListOfFavStocks favoriteStocks) {
+    MainActivityRVAdapter(Map<String, Symbol> stocks, RealmObjectListOfFavStocks favoriteStocks) {
         this.stocks = stocks;
         this.favoriteStocks = favoriteStocks.getList();
     }
@@ -46,7 +46,7 @@ public class StockRvAdapter extends RecyclerView.Adapter<StockRvAdapter.ViewHold
 
         String stockName =  stocks.get(favoriteStocks.get(position)).getQuote().getCompanyName();
         String stockSymbol = stocks.get(favoriteStocks.get(position)).getQuote().getSymbol();
-        String stockPrice = stocks.get(favoriteStocks.get(position)).getQuote().getLatestPrice().toString();
+        String stockPrice = "$"+stocks.get(favoriteStocks.get(position)).getQuote().getLatestPrice().toString();
 
         TextView stockNameTv = viewHolder.stockNameTv;
         TextView stockSymbolTv = viewHolder.stockSymbolTv;

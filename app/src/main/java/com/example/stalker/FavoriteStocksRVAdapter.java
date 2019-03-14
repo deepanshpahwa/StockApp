@@ -15,13 +15,13 @@ import com.example.stalker.Bean.RealmObjectListOfFavStocks;
 
 import io.realm.Realm;
 
-class StockRecyclerViewAdapter  extends RecyclerView.Adapter<StockRecyclerViewAdapter.ViewHolder> {
+class FavoriteStocksRVAdapter extends RecyclerView.Adapter<FavoriteStocksRVAdapter.ViewHolder> {
     private final LayoutInflater mInflater;
     private final ListOfBestMatches mData;
     private final Context context;
     private ItemClickListener mClickListener;
 
-    public StockRecyclerViewAdapter(Context context, ListOfBestMatches data) {
+    public FavoriteStocksRVAdapter(Context context, ListOfBestMatches data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.context = context;
@@ -47,8 +47,8 @@ class StockRecyclerViewAdapter  extends RecyclerView.Adapter<StockRecyclerViewAd
         viewHolder.stockNameTv.setText(stockName.get2Name());
         //Do realm stuff and check if the stock is already favorited.
         Utils.print("loaded row layout");
-        if(stockInFavorite) {viewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_black_24dp);}
-        else {viewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);}
+        if(stockInFavorite) {viewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_red_24dp);}
+        else {viewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_border_red_24dp);}
         viewHolder.favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +60,7 @@ class StockRecyclerViewAdapter  extends RecyclerView.Adapter<StockRecyclerViewAd
                     realm.where(RealmObjectListOfFavStocks.class).findFirst().getList().remove(stockName.get1Symbol());
                     realm.commitTransaction();
 
-                    viewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    viewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_border_red_24dp);
 
 
                 }else {
@@ -69,7 +69,7 @@ class StockRecyclerViewAdapter  extends RecyclerView.Adapter<StockRecyclerViewAd
                     realm.where(RealmObjectListOfFavStocks.class).findFirst().getList().add(stockName.get1Symbol());
                     realm.commitTransaction();
 
-                    viewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    viewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_red_24dp);
                 }
                 realm.close();
 
