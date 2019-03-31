@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.stalker.APIs.AlphaVantageAPI;
@@ -42,6 +43,15 @@ public class StockDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_detail);
         Bundle bundle = getIntent().getExtras();
+
+        Button button = findViewById(R.id.create_custom_indicator);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.StartActivity();
+            }
+        });
 
         if (bundle.getString("companyAbbr") != null){
             STOCKABBR =bundle.getString("companyAbbr");

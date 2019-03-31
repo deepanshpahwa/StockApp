@@ -62,15 +62,15 @@
             android:id="@+id/ASD_indicator1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="164dp"
-            android:layout_marginLeft="164dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ASD_company_abbr"
-            app:layout_constraintVertical_bias="0.75"
+            app:layout_constraintVertical_bias="0.446"
             tools:text="Bollinger" />
 
         <TextView
@@ -86,10 +86,10 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.601"
+            app:layout_constraintHorizontal_bias="0.121"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ASD_company_abbr"
-            app:layout_constraintVertical_bias="0.437"
+            app:layout_constraintVertical_bias="0.243"
             tools:text="MACD" />
 
         <TextView
@@ -105,10 +105,10 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.133"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ASD_indicator1"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="0.019"
             tools:text="2.398" />
 
         <TextView
@@ -124,11 +124,29 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.618"
+            app:layout_constraintHorizontal_bias="0.166"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ASD_indicator2"
-            app:layout_constraintVertical_bias="0.034"
+            app:layout_constraintVertical_bias="0.021"
             tools:text="0.499" />
+
+        <Button
+            android:id="@+id/create_custom_indicator"
+            android:layout_width="382dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/create_custom_indicator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.514"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.928" />
     </android.support.constraint.ConstraintLayout>
 
 

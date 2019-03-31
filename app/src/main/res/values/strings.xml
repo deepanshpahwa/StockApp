@@ -10,4 +10,5 @@
     <string name="Alpha_Vantage_API_key">G3MYWVX7ZUVPI6PJ</string>
     <string name="AlphaVantage_SymbolSearchFunction">SYMBOL_SEARCH</string>
     <string name="title_activity_stock_detail">StockDetailActivity</string>
+    <string name="create_custom_indicator">Create Custom Indicator</string>
 </resources>

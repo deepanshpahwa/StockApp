@@ -33,4 +33,8 @@ public class Utils {
         Snackbar.make(contextView,string,length)
                 .show();
     }
+
+    public static void StartActivity() {
+
+    }
 }
