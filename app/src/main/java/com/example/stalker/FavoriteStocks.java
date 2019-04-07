@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.SearchView;
 
 import com.example.stalker.APIs.AlphaVantageAPI;
+import com.example.stalker.Adapter.FavoriteStocksRVAdapter;
 import com.example.stalker.Bean.ListOfBestMatches;
 
 import retrofit2.Call;

@@ -1,4 +1,4 @@
-package com.example.stalker;
+package com.example.stalker.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.example.stalker.Bean.RealmObjectListOfFavStocks;
 import com.example.stalker.Bean.Symbol;
+import com.example.stalker.R;
+import com.example.stalker.Utils;
 
 import java.util.Map;
 
@@ -20,7 +22,7 @@ public class MainActivityRVAdapter extends RecyclerView.Adapter<MainActivityRVAd
     private Map<String, Symbol> stocks;
     private ItemClickListener mClickListener;
 
-    MainActivityRVAdapter(Map<String, Symbol> stocks, RealmObjectListOfFavStocks favoriteStocks) {
+    public MainActivityRVAdapter(Map<String, Symbol> stocks, RealmObjectListOfFavStocks favoriteStocks) {
         this.stocks = stocks;
         this.favoriteStocks = favoriteStocks.getList();
     }
@@ -95,12 +97,12 @@ public class MainActivityRVAdapter extends RecyclerView.Adapter<MainActivityRVAd
 
     }
 
-    Symbol getItem(String sName) {
+    public Symbol getItem(String sName) {
         return stocks.get(sName);
     }
 
     // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
+    public void setClickListener(ItemClickListener itemClickListener) {
         Utils.print("setclickListener");
         this.mClickListener = itemClickListener;
     }

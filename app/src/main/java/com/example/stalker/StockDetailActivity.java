@@ -23,9 +23,10 @@ public class StockDetailActivity extends AppCompatActivity {
 
     private String STOCKABBR, STOCKNAME;
     TextView stockNameTv,stockNameAbbrTv, indicator1Tv, indicator2Tv, indicator1ValueTv, indicator2ValueTv;
+    Button button;
 
 
-    public StockDetailActivity( String stockAbbr, String stockName ){
+    public StockDetailActivity(String stockAbbr, String stockName){
         this.STOCKABBR = stockAbbr;
         this.STOCKNAME = stockName;
 
@@ -44,14 +45,8 @@ public class StockDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stock_detail);
         Bundle bundle = getIntent().getExtras();
 
-        Button button = findViewById(R.id.create_custom_indicator);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.StartActivity();
-            }
-        });
+
 
         if (bundle.getString("companyAbbr") != null){
             STOCKABBR =bundle.getString("companyAbbr");
@@ -66,11 +61,25 @@ public class StockDetailActivity extends AppCompatActivity {
         indicator2Tv = findViewById(R.id.ASD_indicator2);
         indicator1ValueTv = findViewById(R.id.ASD_indiacator1_value);
         indicator2ValueTv = findViewById(R.id.ASD_indicator2_value);
+        button = findViewById(R.id.create_custom_indicator);
 
         stockNameTv.setText(STOCKNAME);
         stockNameAbbrTv.setText(STOCKABBR);
+        indicator1Tv.setText("MACD");
+        indicator2Tv.setText("Bollinger Bands");
 
-        getData(STOCKABBR,"daily", "open");
+        getData(STOCKABBR,getString(R.string.stock_interval), "open");
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomIndicatorActivity customIndicatorActivity = new CustomIndicatorActivity();
+                Intent intent= customIndicatorActivity.getIntent(StockDetailActivity.this);
+                intent.putExtra("companyAbbr",STOCKABBR);
+                intent.putExtra("companyName",STOCKNAME);
+                StockDetailActivity.this.startActivity(intent);
+            }
+        });
 
 
     }
@@ -90,12 +99,7 @@ public class StockDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
                     Utils.print("pulling MACD data");
-                    TechnicalData data = response.body().getMap().get("2019-03-08");
-
-                    indicator2Tv.setText("Bollinger Bands");
-
-                    indicator1Tv.setText("MACD");
-                    indicator2ValueTv.setText("NA");
+                    TechnicalData data = response.body().getMap().get("2019-03-08");//TODO get current date
 
                     TechnicalData macdValues = response.body().getMap().get("2019-03-05");
                     if (macdValues!=null) {
@@ -103,16 +107,17 @@ public class StockDetailActivity extends AppCompatActivity {
                     }else{
                         Utils.makeSnackBar(findViewById(R.id.coordinatorLayout),"There was an error getting information on this stock", Snackbar.LENGTH_LONG);
                     }
-
 //                Utils.print(data.getMACD()+", "+data.getMACDSignal());
                 }
             }
 
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
-                Utils.print("failed to pull MACD data");
+                Utils.print("failed to pull data for this stock");
             }
         });
+
+        Call<Example> call2 = alphaVantageAPI.getBollingerFromSearchQuery();
     }
 
 

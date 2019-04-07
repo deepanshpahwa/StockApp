@@ -13,4 +13,7 @@ public interface AlphaVantageAPI {
 
     @GET("query")
     Call <Example> getMacdFromSearchQuery(@Query("function") String function_MACD, @Query("symbol") String stockSymbol, @Query("interval") String interval, @Query("series_type") String series_type, @Query("apikey") String apikey );
+
+    @GET("query")
+    Call<Example> getBollingerFromSearchQuery(@Query("function") String function_Bollinger, @Query("symbol") String stockSymbol);
 }

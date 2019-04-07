@@ -1,4 +1,4 @@
-package com.example.stalker;
+package com.example.stalker.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,10 +12,12 @@ import android.widget.TextView;
 import com.example.stalker.Bean.BestMatch;
 import com.example.stalker.Bean.ListOfBestMatches;
 import com.example.stalker.Bean.RealmObjectListOfFavStocks;
+import com.example.stalker.R;
+import com.example.stalker.Utils;
 
 import io.realm.Realm;
 
-class FavoriteStocksRVAdapter extends RecyclerView.Adapter<FavoriteStocksRVAdapter.ViewHolder> {
+public class FavoriteStocksRVAdapter extends RecyclerView.Adapter<FavoriteStocksRVAdapter.ViewHolder> {
     private final LayoutInflater mInflater;
     private final ListOfBestMatches mData;
     private final Context context;

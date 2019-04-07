@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.stalker.APIs.IEXtradingAPI;
+import com.example.stalker.Adapter.MainActivityRVAdapter;
 import com.example.stalker.Bean.RealmObjectListOfFavStocks;
 import com.example.stalker.Bean.Symbol;
 

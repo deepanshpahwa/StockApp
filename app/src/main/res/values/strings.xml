@@ -9,6 +9,24 @@
     <string name="search">Search</string>
     <string name="Alpha_Vantage_API_key">G3MYWVX7ZUVPI6PJ</string>
     <string name="AlphaVantage_SymbolSearchFunction">SYMBOL_SEARCH</string>
-    <string name="title_activity_stock_detail">StockDetailActivity</string>
+    <string name="title_activity_stock_detail">Stock Information</string>
     <string name="create_custom_indicator">Create Custom Indicator</string>
+    <string name="generate_indicator">Generate Indicator</string>
+    <string name="title_favorite_Stocks">Favorite Stocks</string>
+    <string name="title_custom_indicator_activity">Custom Indicator</string>
+    <string name="stock_interval">daily</string>
+    <string-array name="financial_indicators">
+        <item>Select One</item>
+        <item>MAC_D</item>
+        <item>Bollinger Bands</item>
+        <item>Earth</item>
+        <item>Mars</item>
+    </string-array>
+    <string-array name="mathematical_functions">
+        <item>Select One</item>
+        <item>+</item>
+        <item>-</item>
+        <item>×</item>
+        <item>÷</item>
+    </string-array>
 </resources>

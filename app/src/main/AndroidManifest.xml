@@ -28,10 +28,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FavoriteStocks">
+        <activity
+            android:name=".FavoriteStocks"
+            android:label="@string/title_favorite_Stocks">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".CustomIndicatorActivity"
+            android:label="@string/title_custom_indicator_activity"
+            android:theme="@style/NoActionBar">
         </activity>
 
     </application>
