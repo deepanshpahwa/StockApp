@@ -17,4 +17,7 @@ public interface AlphaVantageAPI {
 
     @GET("query")
     Call<Bollinger_Bean> getBollingerFromSearchQuery(@Query("function") String bbands, @Query("symbol") String symbol, @Query("interval") String interval,@Query("time_period") String time_period, @Query("series_type") String series_type, @Query("apikey") String alpha_vantage_api_key);
+
+    @GET("query")
+    Call<> getStockPriceHistory(@Query(""))
 }

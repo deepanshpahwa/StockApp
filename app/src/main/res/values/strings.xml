@@ -24,16 +24,16 @@
 
     <string-array name="financial_indicators">
         <item>Select One</item>
-        <item>MAC_D</item>
-        <item>Bollinger Bands</item>
-        <item>Earth</item>
-        <item>Mars</item>
+        <item>MACD</item>
+        <item>Bollinger Bands(Upper)</item>
+        <item>Bollinger Bands(Middle)</item>
+        <item>Bollinger Bands(Lower)</item>
     </string-array>
     <string-array name="mathematical_functions">
         <item>Select One</item>
         <item>+</item>
         <item>-</item>
-        <item>×</item>
-        <item>÷</item>
+        <item>x</item>
+        <item>/</item>
     </string-array>
 </resources>

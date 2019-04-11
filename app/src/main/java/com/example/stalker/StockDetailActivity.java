@@ -74,8 +74,8 @@ public class StockDetailActivity extends AppCompatActivity {
 
         stockNameTv.setText(STOCKNAME);
         stockNameAbbrTv.setText(STOCKABBR);
-        indicator1Tv.setText("MACD");
-        indicator2Tv.setText("Bollinger Bands");
+        indicator1Tv.setText("Bollinger Bands");
+        indicator2Tv.setText("MACD");
 
         getData(STOCKABBR,getString(R.string.stock_interval), "open", "200");
 
@@ -89,7 +89,6 @@ public class StockDetailActivity extends AppCompatActivity {
                 StockDetailActivity.this.startActivity(intent);
             }
         });
-
 
     }
 
@@ -118,7 +117,8 @@ public class StockDetailActivity extends AppCompatActivity {
                         macdValue1Tv.setText(macdValues.getMACD());
 
                     }catch (Exception e){
-                        indicator1Tv.setText("NA");
+//                        indicator1Tv.setText("NA");
+                        macdValue1Tv.setText("NA");
                         Log.e("MACD on rsponse",e.getMessage());
                         Utils.makeSnackBar(findViewById(R.id.coordinatorLayout),"There was an error getting information on this stock", Snackbar.LENGTH_LONG);
                     }
@@ -151,6 +151,8 @@ public class StockDetailActivity extends AppCompatActivity {
                     }catch (Exception e){
                         Log.e("Bollinger on rsponse",e.getMessage());
                         bollingerValue1Tv.setText("NA");
+                        bollingerValue2Tv.setText("NA");
+                        bollingerValue3Tv.setText("NA");
                         Utils.makeSnackBar(findViewById(R.id.coordinatorLayout),"There was an error getting information on this stock", Snackbar.LENGTH_LONG);
 
                     }

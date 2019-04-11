@@ -62,15 +62,15 @@
             android:id="@+id/ASD_indicator1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginLeft="28dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ASD_company_abbr"
-            app:layout_constraintVertical_bias="0.404"
+            app:layout_constraintVertical_bias="0.41"
             tools:text="Bollinger" />
 
         <TextView
@@ -86,10 +86,10 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.118"
+            app:layout_constraintHorizontal_bias="0.066"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ASD_company_abbr"
-            app:layout_constraintVertical_bias="0.089"
+            app:layout_constraintVertical_bias="0.087"
             tools:text="MACD" />
 
         <TextView
@@ -127,7 +127,7 @@
             app:layout_constraintHorizontal_bias="0.812"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ASD_indicator2"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="0.022"
             tools:text="0.499" />
 
         <Button

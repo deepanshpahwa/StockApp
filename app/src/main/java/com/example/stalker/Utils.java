@@ -16,6 +16,15 @@ import java.util.Locale;
 
 public class Utils {
 
+    public static String MACD = "MACD";
+    public static String BOLL_UPPER = "Bollinger Bands(Upper)";
+    public static String BOLL_MIDDLE = "Bollinger Bands(Middle)";
+    public static String BOLL_LOWER = "Bollinger Bands(Lower)";
+    public static String FUNCTION_ADD = "+";
+    public static String FUCNTION_SUBTRACT = "-";
+    public static String FUCNTION_MULTIPLY = "x";
+    public static String FUCNTION_DIVIDE = "/";
+
 
     //toolbar
     public static void print(String s){
