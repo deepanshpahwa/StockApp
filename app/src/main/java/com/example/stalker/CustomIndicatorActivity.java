@@ -3,7 +3,9 @@ package com.example.stalker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -38,6 +40,7 @@ public class CustomIndicatorActivity extends Activity {
         MaterialSpinner  firstSpinner = (MaterialSpinner ) findViewById(R.id.spinner_first_indicator);
         MaterialSpinner secondSpinner = (MaterialSpinner ) findViewById(R.id.spinner_second_indicator);
         MaterialSpinner  mathematicalFunctions = (MaterialSpinner ) findViewById(R.id.spinner_mathematical_function);
+        Button button = findViewById(R.id.ACI_Button);
 
         setupFISpinner(firstSpinner);
         setupFISpinner(secondSpinner);
@@ -47,6 +50,17 @@ public class CustomIndicatorActivity extends Activity {
 
         stockNameTv.setText(STOCKNAME);
         stockNameAbbrTv.setText(STOCKABBR);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewIndicator newIndicator =  new NewIndicator();
+                Intent intent = newIndicator.getIntent(CustomIndicatorActivity.this);
+                intent.putExtra("companyAbbr",STOCKABBR);
+                intent.putExtra("companyName",STOCKNAME);
+                CustomIndicatorActivity.this.startActivity(intent);
+            }
+        });
 
     }
 

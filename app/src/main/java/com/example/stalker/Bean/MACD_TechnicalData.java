@@ -3,7 +3,7 @@ package com.example.stalker.Bean;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TechnicalData {
+public class MACD_TechnicalData {
     @SerializedName("MACD_Signal")
     @Expose
     private String mACDSignal;

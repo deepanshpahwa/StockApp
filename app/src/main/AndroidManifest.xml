@@ -40,6 +40,11 @@
             android:label="@string/title_custom_indicator_activity"
             android:theme="@style/NoActionBar">
         </activity>
+        <activity
+            android:name=".NewIndicator"
+            android:label="@string/title_new_indicator_activity"
+            android:theme="@style/NoActionBar">
+        </activity>
 
     </application>
 

@@ -15,6 +15,13 @@
     <string name="title_favorite_Stocks">Favorite Stocks</string>
     <string name="title_custom_indicator_activity">Custom Indicator</string>
     <string name="stock_interval">daily</string>
+    <string name="Bollinger_UpperBand">Real Lower Band</string>
+    <string name="Bollinger_LowerBand">Real Upper Band</string>
+    <string name="Bollinger_MiddleBand">Real Middle Band</string>
+    <string name="macd_string">MACD Signal</string>
+    <string name="dash">-</string>
+    <string name="title_new_indicator_activity">New Indicator</string>
+
     <string-array name="financial_indicators">
         <item>Select One</item>
         <item>MAC_D</item>
