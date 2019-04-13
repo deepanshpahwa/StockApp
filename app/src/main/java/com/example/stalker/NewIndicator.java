@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.stalker.APIs.AlphaVantageAPI;
 import com.example.stalker.Bean.BollingerTechnicalData;
@@ -43,6 +45,7 @@ public class NewIndicator extends Activity{
     private ArrayList<Entry> values = new ArrayList<>();
     private static Map<String, MACD_TechnicalData> MACD_hashMap = new HashMap<>();
     private static Map<String, BollingerTechnicalData> Bollinger_hashMap = new HashMap<>();
+    private static int NUMBER_OF_DATAPOINTS = 50;
 
     public Intent getIntent(Activity activity){
         Intent intent = new Intent(activity, this.getClass());
@@ -74,13 +77,21 @@ public class NewIndicator extends Activity{
             MATHEMATICAL_FUNCTION = bundle.getString("thirdSpinner_value");
         }
 
-//        getData(STOCKABBR,getString(R.string.stock_interval), "open", "200");
-        getStockPrice(STOCKABBR);
+        loadIndicatorChart(STOCKABBR,getString(R.string.stock_interval), "open", "200");
+        loadPriceChart(STOCKABBR);
+
+        Button submit = findViewById(R.id.NI_button);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
     }
 
-    private void getStockPrice(String symbol) {
+    private void loadPriceChart(String symbol) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.AlphaVantageAPI_BaseURL))
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -94,12 +105,12 @@ public class NewIndicator extends Activity{
 
                 if (response.isSuccessful()) {
 
-                    DataPoint[] dataPointsprice = new DataPoint[200];
+                    DataPoint[] dataPointsprice = new DataPoint[NUMBER_OF_DATAPOINTS];
 
-                    ArrayList<String> temp = new ArrayList<>(200);
+                    ArrayList<String> temp = new ArrayList<>(NUMBER_OF_DATAPOINTS);
                     int index = 0;
                     for (Map.Entry<String, StockPriceData> entry : response.body().getMap().entrySet()){
-                        if (index>=200){break;}
+                        if (index>=NUMBER_OF_DATAPOINTS){break;}
                         temp.add(entry.getKey());
                         index++;
                     }
@@ -108,7 +119,7 @@ public class NewIndicator extends Activity{
 
                     int indexi=0;
                     for (String entry:temp){
-                        if (indexi >= 200){break;}
+                        if (indexi >= NUMBER_OF_DATAPOINTS){break;}
 
                         dataPointsprice[indexi] = new DataPoint(Utils.parseDateForChart(entry),Double.valueOf(response.body().getMap().get(entry).get1Open()));//TODO
 
@@ -133,7 +144,7 @@ public class NewIndicator extends Activity{
 
     private void loadCustomIndicatorChart(DataPointInterface[] dataset, int chartViewId) {
         try {
-            GraphView graphView = findViewById(chartViewId);
+            GraphView graphView = (GraphView) findViewById(chartViewId);
             Utils.print(String.valueOf(dataset));
             LineGraphSeries<DataPointInterface> series = new LineGraphSeries<>(dataset);
             graphView.addSeries(series);
@@ -154,21 +165,13 @@ public class NewIndicator extends Activity{
         }
     }
 
-//    private DataPointInterface[] getDataPoint() {
-//    private void getDataPoint() {
-//        dataPoint = new DataPoint[200];
-//        getData(STOCKABBR,getString(R.string.stock_interval), "open", "200");
-//        return dataPoint;
-//    }
-
-    private void getData(String symbol, String interval, String series_type, String time_period) {
+    private void loadIndicatorChart(String symbol, String interval, String series_type, String time_period) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.AlphaVantageAPI_BaseURL))
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         final String strDate = Utils.getLatestBusinessDayDate();
-//        Utils.print(strDate);
 
         AlphaVantageAPI alphaVantageAPI = retrofit.create(AlphaVantageAPI.class);
 
@@ -181,22 +184,9 @@ public class NewIndicator extends Activity{
         /**
         Other financial indicators can be added over here.
          */
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
-//        while (MACD_hashMap==null || Bollinger_hashMap==null){
-//            continue;
-//        }
-
-//        Single<Response<List<SampleUserDetailsPojo>>> testObservable= TestApplication.getRestClient().getRestInterface().getUserDetails();
         Utils.print("DATA PULLED");
 
-//        performMathematicalFunction();
-
-//        Call<MACD_Bean> call2 = alphaVantageAPI.getBollingerFromSearchQuery();
     }
 
     private void performMathematicalFunction() {
@@ -204,24 +194,16 @@ public class NewIndicator extends Activity{
             return;
         }
 
-//        try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
         Utils.print("SIZE of HASHMAPS: "+MACD_hashMap.size()+"   ,  "+Bollinger_hashMap.size());
-        DataPoint[] dataPoints = new DataPoint[200];
-
-//        if (FIRST_INDICATOR == Utils.MACD){
-//            firstIndicator = MACD_hashMap.
-//        }
+        DataPoint[] dataPoints = new DataPoint[NUMBER_OF_DATAPOINTS];
 
 
-        ArrayList<String> temp = new ArrayList<>(200);
+
+        ArrayList<String> temp = new ArrayList<>();
         int index = 0;
         for (Map.Entry<String, MACD_TechnicalData> entry : MACD_hashMap.entrySet()){
-            if (index>=200){break;}
+            if (index>=NUMBER_OF_DATAPOINTS){break;}
             temp.add(entry.getKey());
             index++;
         }
@@ -232,7 +214,7 @@ public class NewIndicator extends Activity{
 
             int indexi=0;
             for (String entry:temp){
-                if (indexi >= 200){
+                if (indexi >= NUMBER_OF_DATAPOINTS){
                     break;
                 }
 //                Double sum = Double.valueOf(  MACD_hashMap.get(temp.get(indexi)).getMACDSignal()  ) + Double.valueOf(Bollinger_hashMap.get(temp.get(indexi)).getRlBand());
@@ -250,7 +232,7 @@ public class NewIndicator extends Activity{
 
             int indexi=0;
             for (String entry:temp){
-                if (indexi >= 200){
+                if (indexi >= NUMBER_OF_DATAPOINTS){
                     break;
                 }
 //                Double sum = Double.valueOf(  MACD_hashMap.get(temp.get(indexi)).getMACDSignal()  ) + Double.valueOf(Bollinger_hashMap.get(temp.get(indexi)).getRlBand());
@@ -267,7 +249,7 @@ public class NewIndicator extends Activity{
 
             int indexi=0;
             for (String entry:temp){
-                if (indexi >= 200){
+                if (indexi >= NUMBER_OF_DATAPOINTS){
                     break;
                 }
 //                Double sum = Double.valueOf(  MACD_hashMap.get(temp.get(indexi)).getMACDSignal()  ) + Double.valueOf(Bollinger_hashMap.get(temp.get(indexi)).getRlBand());
@@ -282,7 +264,7 @@ public class NewIndicator extends Activity{
         }else if(MATHEMATICAL_FUNCTION.equals("/")){
             int indexi=0;
             for (String entry:temp){
-                if (indexi >= 200){
+                if (indexi >= NUMBER_OF_DATAPOINTS){
                     break;
                 }
 //                Double sum = Double.valueOf(  MACD_hashMap.get(temp.get(indexi)).getMACDSignal()  ) + Double.valueOf(Bollinger_hashMap.get(temp.get(indexi)).getRlBand());
@@ -382,35 +364,6 @@ public class NewIndicator extends Activity{
                     try{
                         updateMACDHashMap(response.body().getMap());
                         performMathematicalFunction();
-//                        MACD_hashMap = response.body().getMap();
-                        /*
-//                        macdValues = response.body().getMap().get(strDate);
-
-                        DataPoint[] dataPoints = new DataPoint[200];
-
-                        ArrayList<String> temp = new ArrayList<>();
-
-
-                        int indexi =0;
-
-                        for (Map.Entry<String, MACD_TechnicalData> entry : response.body().getMap().entrySet()){
-                            if (indexi>=200){break;}
-                            temp.add(entry.getKey());
-                            indexi++;
-                        }
-
-                        Collections.sort(temp);
-
-                        int indexj =0;
-
-                        for (String entry:temp){
-                            if (indexj>=200){break;}
-                            dataPoints[indexj] = new DataPoint(Utils.parseDateForChart(entry), Double.valueOf(response.body().getMap().get(entry).getMACDSignal()));
-                            indexj++;
-                        }
-                        loadCustomIndicatorChart(dataPoints);
-
-                    */
                     }catch (Exception e){
                         e.printStackTrace();
                             Utils.makeSnackBar(findViewById(R.id.ANI_coordinator_layout),"There was an error getting information on this stock", Snackbar.LENGTH_LONG);
