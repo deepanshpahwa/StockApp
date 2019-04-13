@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 
 import com.example.stalker.APIs.AlphaVantageAPI;
-import com.example.stalker.APIs.IEXtradingAPI;
 import com.example.stalker.Bean.BollingerTechnicalData;
 import com.example.stalker.Bean.Bollinger_Bean;
 import com.example.stalker.Bean.MACD_Bean;
 import com.example.stalker.Bean.MACD_TechnicalData;
+import com.example.stalker.Bean.StockPriceBean;
+import com.example.stalker.Bean.StockPriceData;
 import com.github.mikephil.charting.data.Entry;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
@@ -63,6 +63,8 @@ public class NewIndicator extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_indicator);
 
+//        Utils.setToolbar(NewIndicator);
+
         Bundle bundle = getIntent().getExtras();
         if (bundle.getString("companyAbbr") != null){
             STOCKABBR =bundle.getString("companyAbbr");
@@ -72,64 +74,92 @@ public class NewIndicator extends Activity{
             MATHEMATICAL_FUNCTION = bundle.getString("thirdSpinner_value");
         }
 
-        getDataPoint();
-
-        getStockPrice();
-
-
+//        getData(STOCKABBR,getString(R.string.stock_interval), "open", "200");
+        getStockPrice(STOCKABBR);
 
 
     }
 
-    private void getStockPrice() {
+    private void getStockPrice(String symbol) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.AlphaVantageAPI_BaseURL))
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
-        IEXtradingAPI ieXtradingAPI = retrofit.create(IEXtradingAPI.class);
-    }
+        AlphaVantageAPI alphaVantageAPI = retrofit.create(AlphaVantageAPI.class);
+        Call<StockPriceBean> price_call = alphaVantageAPI.getStockPriceHistory(getString(R.string.alphavantage_time_series_daily), symbol, String.valueOf(R.string.Alpha_Vantage_API_key));
 
-    private void loadPriceChart(DataPointInterface[] dataset) {
-        GraphView graphView = findViewById(R.id.priceChart);
-        Utils.print(String.valueOf(dataset));
-        LineGraphSeries<DataPointInterface> series = new LineGraphSeries<>(dataset);
-        graphView.addSeries(series);
-
-        graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+        price_call.enqueue(new Callback<StockPriceBean>() {
             @Override
-            public String formatLabel(double value, boolean isValueX) {
-                if (isValueX){
-                    return sdf.format(new Date((long) value));
-                }else{
-                    return super.formatLabel(value, isValueX);
+            public void onResponse(Call<StockPriceBean> call, Response<StockPriceBean> response) {
+
+                if (response.isSuccessful()) {
+
+                    DataPoint[] dataPointsprice = new DataPoint[200];
+
+                    ArrayList<String> temp = new ArrayList<>(200);
+                    int index = 0;
+                    for (Map.Entry<String, StockPriceData> entry : response.body().getMap().entrySet()){
+                        if (index>=200){break;}
+                        temp.add(entry.getKey());
+                        index++;
+                    }
+
+                    Collections.sort(temp);
+
+                    int indexi=0;
+                    for (String entry:temp){
+                        if (indexi >= 200){break;}
+
+                        dataPointsprice[indexi] = new DataPoint(Utils.parseDateForChart(entry),Double.valueOf(response.body().getMap().get(entry).get1Open()));//TODO
+
+                        indexi++;
+                    }
+                    Utils.print(String.valueOf(indexi));
+
+//                    try {
+                        loadCustomIndicatorChart(dataPointsprice, R.id.priceChart);
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                    }
                 }
+            }
+
+            @Override
+            public void onFailure(Call<StockPriceBean> call, Throwable t) {
+
             }
         });
     }
 
-    private void loadChart(DataPointInterface[] dataset) {
-        GraphView graphView = findViewById(R.id.new_graph_view);
-        Utils.print(String.valueOf(dataset));
-        LineGraphSeries<DataPointInterface> series = new LineGraphSeries<>(dataset);
-        graphView.addSeries(series);
+    private void loadCustomIndicatorChart(DataPointInterface[] dataset, int chartViewId) {
+        try {
+            GraphView graphView = findViewById(chartViewId);
+            Utils.print(String.valueOf(dataset));
+            LineGraphSeries<DataPointInterface> series = new LineGraphSeries<>(dataset);
+            graphView.addSeries(series);
 
-        graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
-            @Override
-            public String formatLabel(double value, boolean isValueX) {
-                if (isValueX){
-                    return sdf.format(new Date((long) value));
-                }else{
-                    return super.formatLabel(value, isValueX);
+            graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+                @Override
+                public String formatLabel(double value, boolean isValueX) {
+                    if (isValueX) {
+                        return sdf.format(new Date((long) value));
+                    } else {
+                        return super.formatLabel(value, isValueX);
+                    }
                 }
-            }
-        });
+            });
+        }catch (Exception e){
+            Utils.makeSnackBar(findViewById(R.id.ANI_coordinator_layout),"Error loading data.",Snackbar.LENGTH_SHORT);
+            e.printStackTrace();
+        }
     }
 
-    private DataPointInterface[] getDataPoint() {
-        dataPoint = new DataPoint[200];
-        getData(STOCKABBR,getString(R.string.stock_interval), "open", "200");
-        return dataPoint;
-    }
+//    private DataPointInterface[] getDataPoint() {
+//    private void getDataPoint() {
+//        dataPoint = new DataPoint[200];
+//        getData(STOCKABBR,getString(R.string.stock_interval), "open", "200");
+//        return dataPoint;
+//    }
 
     private void getData(String symbol, String interval, String series_type, String time_period) {
 
@@ -188,7 +218,7 @@ public class NewIndicator extends Activity{
 //        }
 
 
-        ArrayList<String> temp = new ArrayList<>();
+        ArrayList<String> temp = new ArrayList<>(200);
         int index = 0;
         for (Map.Entry<String, MACD_TechnicalData> entry : MACD_hashMap.entrySet()){
             if (index>=200){break;}
@@ -206,10 +236,10 @@ public class NewIndicator extends Activity{
                     break;
                 }
 //                Double sum = Double.valueOf(  MACD_hashMap.get(temp.get(indexi)).getMACDSignal()  ) + Double.valueOf(Bollinger_hashMap.get(temp.get(indexi)).getRlBand());
-                Utils.print("try1"+getvaluefromIndicatorandKey(FIRST_INDICATOR,temp.get(indexi)));
+                Utils.print("try1"+ getValueFromIndicatorAndKey(FIRST_INDICATOR,temp.get(indexi)));
                 Utils.print("try2"+  MACD_hashMap.get(temp.get(indexi)).getMACDSignal() );
 
-                Double sum = Double.valueOf(  getvaluefromIndicatorandKey(FIRST_INDICATOR, temp.get(indexi)) ) + Double.valueOf(getvaluefromIndicatorandKey(SECOND_INDICATOR, temp.get(indexi)));
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) + Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)));
                 dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
 
                 indexi++;
@@ -224,7 +254,7 @@ public class NewIndicator extends Activity{
                     break;
                 }
 //                Double sum = Double.valueOf(  MACD_hashMap.get(temp.get(indexi)).getMACDSignal()  ) + Double.valueOf(Bollinger_hashMap.get(temp.get(indexi)).getRlBand());
-                Double difference = Double.valueOf(  getvaluefromIndicatorandKey(FIRST_INDICATOR, temp.get(indexi)) ) - Double.valueOf(getvaluefromIndicatorandKey(SECOND_INDICATOR, temp.get(indexi)));
+                Double difference = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) - Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)));
                 dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),difference);
 
                 indexi++;
@@ -241,7 +271,7 @@ public class NewIndicator extends Activity{
                     break;
                 }
 //                Double sum = Double.valueOf(  MACD_hashMap.get(temp.get(indexi)).getMACDSignal()  ) + Double.valueOf(Bollinger_hashMap.get(temp.get(indexi)).getRlBand());
-                Double product = Double.valueOf(  getvaluefromIndicatorandKey(FIRST_INDICATOR, temp.get(indexi)) ) * Double.valueOf(getvaluefromIndicatorandKey(SECOND_INDICATOR, temp.get(indexi)));
+                Double product = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) * Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)));
                 dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),product);
 
                 indexi++;
@@ -256,7 +286,7 @@ public class NewIndicator extends Activity{
                     break;
                 }
 //                Double sum = Double.valueOf(  MACD_hashMap.get(temp.get(indexi)).getMACDSignal()  ) + Double.valueOf(Bollinger_hashMap.get(temp.get(indexi)).getRlBand());
-                Double quotient = Double.valueOf(  getvaluefromIndicatorandKey(FIRST_INDICATOR, temp.get(indexi)) ) / Double.valueOf(getvaluefromIndicatorandKey(SECOND_INDICATOR, temp.get(indexi)));
+                Double quotient = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) / Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)));
                 dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),quotient);
 
                 indexi++;
@@ -265,12 +295,11 @@ public class NewIndicator extends Activity{
 
         }
 
-        loadChart(dataPoints);
-
+        loadCustomIndicatorChart(dataPoints,R.id.new_graph_view);
 
     }
 
-    Double getvaluefromIndicatorandKey(String indicator, String key){
+    Double getValueFromIndicatorAndKey(String indicator, String key){
         if (indicator == Utils.MACD){
             try {
                 return Double.valueOf(MACD_hashMap.get(key).getMACDSignal());
@@ -379,7 +408,7 @@ public class NewIndicator extends Activity{
                             dataPoints[indexj] = new DataPoint(Utils.parseDateForChart(entry), Double.valueOf(response.body().getMap().get(entry).getMACDSignal()));
                             indexj++;
                         }
-                        loadChart(dataPoints);
+                        loadCustomIndicatorChart(dataPoints);
 
                     */
                     }catch (Exception e){

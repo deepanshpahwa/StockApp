@@ -21,6 +21,7 @@
     <string name="macd_string">MACD Signal</string>
     <string name="dash">-</string>
     <string name="title_new_indicator_activity">New Indicator</string>
+    <string name="alphavantage_time_series_daily">TIME_SERIES_DAILY</string>
 
     <string-array name="financial_indicators">
         <item>Select One</item>

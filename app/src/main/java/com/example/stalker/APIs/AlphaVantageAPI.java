@@ -3,6 +3,7 @@ package com.example.stalker.APIs;
 import com.example.stalker.Bean.Bollinger_Bean;
 import com.example.stalker.Bean.MACD_Bean;
 import com.example.stalker.Bean.ListOfBestMatches;
+import com.example.stalker.Bean.StockPriceBean;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,5 +20,5 @@ public interface AlphaVantageAPI {
     Call<Bollinger_Bean> getBollingerFromSearchQuery(@Query("function") String bbands, @Query("symbol") String symbol, @Query("interval") String interval,@Query("time_period") String time_period, @Query("series_type") String series_type, @Query("apikey") String alpha_vantage_api_key);
 
     @GET("query")
-    Call<> getStockPriceHistory(@Query(""))
+    Call<StockPriceBean> getStockPriceHistory(@Query("function") String function, @Query("symbol") String symbol, @Query("apikey") String apikey);
 }
