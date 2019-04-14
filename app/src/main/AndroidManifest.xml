@@ -45,6 +45,11 @@
             android:label="@string/title_new_indicator_activity"
             android:theme="@style/NoActionBar">
         </activity>
+        <activity
+            android:name=".SavedIndicatorActivity"
+            android:label="@string/title_save_indicator_activity"
+            android:theme="@style/NoActionBar">
+        </activity>
 
     </application>
 

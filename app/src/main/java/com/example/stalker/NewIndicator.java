@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.stalker.APIs.AlphaVantageAPI;
 import com.example.stalker.Bean.BollingerTechnicalData;
 import com.example.stalker.Bean.Bollinger_Bean;
+import com.example.stalker.Bean.CustomIndicatorBeanRealm;
+import com.example.stalker.Bean.ListOFCustomIndicatorsBean;
 import com.example.stalker.Bean.MACD_Bean;
 import com.example.stalker.Bean.MACD_TechnicalData;
 import com.example.stalker.Bean.StockPriceBean;
@@ -29,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +51,7 @@ public class NewIndicator extends Activity{
     private static Map<String, MACD_TechnicalData> MACD_hashMap = new HashMap<>();
     private static Map<String, BollingerTechnicalData> Bollinger_hashMap = new HashMap<>();
     private static int NUMBER_OF_DATAPOINTS = 50;
+    Realm realm;
 
     public Intent getIntent(Activity activity){
         Intent intent = new Intent(activity, this.getClass());
@@ -62,11 +68,12 @@ public class NewIndicator extends Activity{
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_indicator);
 
 //        Utils.setToolbar(NewIndicator);
+        realm = Realm.getDefaultInstance();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle.getString("companyAbbr") != null){
@@ -77,6 +84,8 @@ public class NewIndicator extends Activity{
             MATHEMATICAL_FUNCTION = bundle.getString("thirdSpinner_value");
         }
 
+        final EditText savedName = findViewById(R.id.saved_name_ANI);
+
         loadIndicatorChart(STOCKABBR,getString(R.string.stock_interval), "open", "200");
         loadPriceChart(STOCKABBR);
 
@@ -84,7 +93,38 @@ public class NewIndicator extends Activity{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.print("NIA "+savedName.getText().toString().trim());
+                if (savedName.getText().toString().trim().length() == 0) {
+                    Utils.makeToast(getApplicationContext(), "Please enter a name");
+                } else {
+                    realm.beginTransaction();
+                    CustomIndicatorBeanRealm object = realm.createObject(CustomIndicatorBeanRealm.class);
+                    ListOFCustomIndicatorsBean list;
+                    if (realm.where(ListOFCustomIndicatorsBean.class).findFirst()==null){
+                        list = realm.createObject(ListOFCustomIndicatorsBean.class);
+                    }else{
+                        list = realm.where(ListOFCustomIndicatorsBean.class).findFirst();
+                    }
+                    if (object.isValid() && list.isValid()) {
+                        Utils.print("NIA HERE HERE");
+                        object.setName(savedName.getText().toString().trim());
+                        object.setFirstElement(FIRST_INDICATOR);
+                        object.setSecondElement(SECOND_INDICATOR);
+                        object.setHasThirdElement(false);//TODO change
+                        object.setFirstMathFunction(MATHEMATICAL_FUNCTION);
+                        object.setSecondMathFunction(null);//TODO change
+                        list.getList().add(object);
+                    }
+                    realm.commitTransaction();
 
+                    SavedIndicatorActivity savedIndicatorActivity = new SavedIndicatorActivity();
+                    Intent intent = savedIndicatorActivity.getIntent(NewIndicator.this);
+                    NewIndicator.this.startActivity(intent);
+
+
+                    //TODO disable button
+                    //TODO show toast to display "View saved indicators"
+                }
             }
         });
 

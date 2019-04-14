@@ -32,7 +32,7 @@ public class Utils {
         System.out.println(":::::::::::"+s);
     }
 
-    static void setToolbar(AppCompatActivity activity) {
+    public static void setToolbar(AppCompatActivity activity) {
         activity.setContentView(R.layout.activity_stock_detail);
         Toolbar toolbar = activity.findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -57,16 +58,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityRVAda
         rvStocks = (RecyclerView) findViewById(R.id.rvStocks);
 
 
-//        favoriteStocks.add(new RealmObjectStock("AAPL"));
-//        favoriteStocks.add(new RealmObjectStock("NFLX"));
-//        favoriteStocks.add(new RealmObjectStock("MSFT"));
-//        favoriteStocks.add(new RealmObjectStock("AMZN"));
-//        favoriteStocks.add(new RealmObjectStock("GOOGL"));
-//        favoriteStocks.add(new RealmObjectStock("TWTR"));
-//        favoriteStocks.add(new RealmObjectStock("TSLA"));
-//        favoriteStocks.add(new RealmObjectStock("FB"));
-//        favoriteStocks.add(new RealmObjectStock("GPRO"));
-
 
         realm.beginTransaction();
         RealmObjectListOfFavStocks object = realm.createObject(RealmObjectListOfFavStocks.class);
@@ -109,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityRVAda
                     stocksMAP = response.body();
 
                     rvStocks.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    rvStocks.setItemAnimator(new DefaultItemAnimator());//TODO lets see what this does.
                     adapter = new MainActivityRVAdapter(stocksMAP, favoriteStocks);
                     adapter.setClickListener(MainActivity.this);
                     rvStocks.setAdapter(adapter);
