@@ -19,16 +19,23 @@ public class SavedIndicatorRVAdapter extends RecyclerView.Adapter<SavedIndicator
 
     private final Context context;
     private final LayoutInflater mInflater;
+    Realm realm;
+    private ItemClickListener mClickListener;
+
 
     public SavedIndicatorRVAdapter(Context context) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
-
+        realm = Realm.getDefaultInstance();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+
+//        Context context = viewGroup.getContext();
+//        LayoutInflater inflater = LayoutInflater.from(context);
+
         View view = mInflater.inflate(R.layout.save_indicator_tv_row, viewGroup, false);
         return new ViewHolder(view) ;
     }
@@ -36,10 +43,8 @@ public class SavedIndicatorRVAdapter extends RecyclerView.Adapter<SavedIndicator
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
 
-        Realm realm = Realm.getDefaultInstance();
         CustomIndicatorBeanRealm  object = realm.where(ListOFCustomIndicatorsBean.class).findFirst().getList().get(position);
 
-        Utils.print("SIRVA"+object.getName());
         viewHolder.customIndicatorName.setText(object.getName());//TODO
         if (object.hasThirdElement()) {
             viewHolder.customIndicatorDefintion.setText(object.getFirstElement() + object.getFirstMathFunction() + object.getSecondElement() + object.getSecondMathFunction() + object.hasThirdElement());//TODO
@@ -54,7 +59,12 @@ public class SavedIndicatorRVAdapter extends RecyclerView.Adapter<SavedIndicator
         return realm.where(ListOFCustomIndicatorsBean.class).findFirst().getList().size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener  = itemClickListener;
+        Utils.print("HHHHsettnglistener");
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final TextView customIndicatorName;
         private final TextView customIndicatorDefintion;
@@ -63,6 +73,19 @@ public class SavedIndicatorRVAdapter extends RecyclerView.Adapter<SavedIndicator
             super(itemView);
             customIndicatorName = (TextView)itemView.findViewById(R.id.indicator_name_tv);
             customIndicatorDefintion = (TextView)itemView.findViewById(R.id.indicator_definition_tv);
+            itemView.setOnClickListener(this);
+
         }
+
+
+        @Override
+        public void onClick(View view   ) {
+            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            Utils.print("HHHHOnclick 2");
+        }
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
     }
 }

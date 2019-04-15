@@ -7,7 +7,7 @@
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
     <item
-        android:id="@+id/settings"
+        android:id="@+id/show_saved_indicators"
         android:icon="@drawable/ic_settings"
         app:showAsAction="never"
         android:title="@string/favorite" />

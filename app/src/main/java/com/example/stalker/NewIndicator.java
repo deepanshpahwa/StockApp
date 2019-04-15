@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.stalker.APIs.AlphaVantageAPI;
 import com.example.stalker.Bean.BollingerTechnicalData;
@@ -46,12 +45,26 @@ public class NewIndicator extends Activity{
     private static String STOCKNAME = "";
     private static String FIRST_INDICATOR = "";
     private static String SECOND_INDICATOR = "";
-    private static String MATHEMATICAL_FUNCTION = "";
+    private static String THIRD_INDICATOR = "";
+    private static boolean HAS_THIRD_INDICATOR ;
+    private static String FIRST_MATH_FUNCTION = "";
+    private static String SECOND_MATH_FUNCTION = "";
     private ArrayList<Entry> values = new ArrayList<>();
     private static Map<String, MACD_TechnicalData> MACD_hashMap = new HashMap<>();
     private static Map<String, BollingerTechnicalData> Bollinger_hashMap = new HashMap<>();
     private static int NUMBER_OF_DATAPOINTS = 50;
     Realm realm;
+    boolean showButton;
+
+    public NewIndicator(boolean showSaveButton) {
+        if (showSaveButton) {
+            showButton = showSaveButton;
+        }
+    }
+    public NewIndicator() {
+        showButton=true;
+    }
+
 
     public Intent getIntent(Activity activity){
         Intent intent = new Intent(activity, this.getClass());
@@ -77,11 +90,20 @@ public class NewIndicator extends Activity{
 
         Bundle bundle = getIntent().getExtras();
         if (bundle.getString("companyAbbr") != null){
-            STOCKABBR =bundle.getString("companyAbbr");
-            STOCKNAME =bundle.getString("companyName");
-            FIRST_INDICATOR = bundle.getString("firstSpinner_value");
-            SECOND_INDICATOR = bundle.getString("secondSpinner_value");
-            MATHEMATICAL_FUNCTION = bundle.getString("thirdSpinner_value");
+            STOCKABBR =bundle.getString(Utils.COMPANY_ABBR);
+            STOCKNAME =bundle.getString(Utils.COMPANY_NAME);
+
+            FIRST_INDICATOR = bundle.getString(Utils.FIRST_ELEMENT);
+            SECOND_INDICATOR = bundle.getString(Utils.SECOND_ELEMENT);
+            FIRST_MATH_FUNCTION = bundle.getString(Utils.FIRST_MATH_FUNCTION);
+
+            HAS_THIRD_INDICATOR = bundle.getBoolean(Utils.HAS_THIRD_ELEMENT);
+
+            if (HAS_THIRD_INDICATOR){
+                THIRD_INDICATOR = bundle.getString(Utils.THIRD_ELEMENT);
+                SECOND_MATH_FUNCTION = bundle.getString(Utils.SECOND_MATH_FUNCTION);
+            }
+
         }
 
         final EditText savedName = findViewById(R.id.saved_name_ANI);
@@ -89,7 +111,13 @@ public class NewIndicator extends Activity{
         loadIndicatorChart(STOCKABBR,getString(R.string.stock_interval), "open", "200");
         loadPriceChart(STOCKABBR);
 
+
+
         Button submit = findViewById(R.id.NI_button);
+        if (!showButton){
+            submit.setVisibility(View.INVISIBLE);
+            savedName.setVisibility(View.INVISIBLE);
+        }
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,15 +138,21 @@ public class NewIndicator extends Activity{
                         object.setName(savedName.getText().toString().trim());
                         object.setFirstElement(FIRST_INDICATOR);
                         object.setSecondElement(SECOND_INDICATOR);
-                        object.setHasThirdElement(false);//TODO change
-                        object.setFirstMathFunction(MATHEMATICAL_FUNCTION);
-                        object.setSecondMathFunction(null);//TODO change
+                        object.setFirstMathFunction(FIRST_MATH_FUNCTION);
+
+                        object.setHasThirdElement(HAS_THIRD_INDICATOR);
+                        if (HAS_THIRD_INDICATOR) {
+                            object.setSecondMathFunction(SECOND_MATH_FUNCTION);//TODO change
+                            object.setThirdElement(THIRD_INDICATOR);
+                        }
                         list.getList().add(object);
                     }
                     realm.commitTransaction();
 
                     SavedIndicatorActivity savedIndicatorActivity = new SavedIndicatorActivity();
                     Intent intent = savedIndicatorActivity.getIntent(NewIndicator.this);
+                    intent.putExtra("companyAbbr", STOCKABBR);
+                    intent.putExtra("companyName",STOCKNAME);
                     NewIndicator.this.startActivity(intent);
 
 
@@ -250,7 +284,7 @@ public class NewIndicator extends Activity{
 
         Collections.sort(temp);
 
-        if (MATHEMATICAL_FUNCTION.equals("+")){
+        if (FIRST_MATH_FUNCTION.equals("+")){
 
             int indexi=0;
             for (String entry:temp){
@@ -268,7 +302,7 @@ public class NewIndicator extends Activity{
             }
             Utils.print(String.valueOf(indexi));
 
-        }else if(MATHEMATICAL_FUNCTION.equals("-")){
+        }else if(FIRST_MATH_FUNCTION.equals("-")){
 
             int indexi=0;
             for (String entry:temp){
@@ -285,7 +319,7 @@ public class NewIndicator extends Activity{
 
 
 
-        }else if(MATHEMATICAL_FUNCTION.equals("x")){
+        }else if(FIRST_MATH_FUNCTION.equals("x")){
 
             int indexi=0;
             for (String entry:temp){
@@ -301,7 +335,7 @@ public class NewIndicator extends Activity{
             Utils.print(String.valueOf(indexi));
 
 
-        }else if(MATHEMATICAL_FUNCTION.equals("/")){
+        }else if(FIRST_MATH_FUNCTION.equals("/")){
             int indexi=0;
             for (String entry:temp){
                 if (indexi >= NUMBER_OF_DATAPOINTS){
@@ -418,4 +452,17 @@ public class NewIndicator extends Activity{
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        super.onStop();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onPause();
+        super.onStop();
+        super.onDestroy();
+    }
 }

@@ -132,11 +132,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityRVAda
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.favorites:
+            case R.id.add_favorites:
                 Intent intent = new Intent(MainActivity.this, FavoriteStocks.class);
                 MainActivity.this.startActivity(intent);
-            case R.id.settings:
+            case R.id.show_saved_indicators:
                 //open the settings page
+                SavedIndicatorActivity savedIndicatorActivity = new SavedIndicatorActivity();
+                Intent intent2 = savedIndicatorActivity.getIntent(MainActivity.this);
+                MainActivity.this.startActivity(intent2);
             default:
                 return super.onOptionsItemSelected(item);
         }

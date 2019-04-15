@@ -26,6 +26,19 @@ public class Utils {
     public static String FUCNTION_MULTIPLY = "x";
     public static String FUCNTION_DIVIDE = "/";
 
+    public static String FIRST_ELEMENT = "first_element";
+    public static String SECOND_ELEMENT = "second_element";
+    public static String THIRD_ELEMENT = "third_element";
+    public static String FIRST_MATH_FUNCTION = "first_math_function";
+    public static String SECOND_MATH_FUNCTION = "second_math_function";
+    public static String HAS_THIRD_ELEMENT = "has_third_element";
+
+    public static String COMPANY_ABBR = "companyAbbr";
+    public static String COMPANY_NAME = "companyName";
+
+
+
+
 
     //toolbar
     public static void print(String s){

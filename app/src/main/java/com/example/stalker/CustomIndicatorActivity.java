@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,14 +41,18 @@ public class CustomIndicatorActivity extends Activity {
 
         final MaterialSpinner  firstSpinner = (MaterialSpinner ) findViewById(R.id.spinner_first_indicator);
         final MaterialSpinner secondSpinner = (MaterialSpinner ) findViewById(R.id.spinner_second_indicator);
-        final MaterialSpinner  mathematicalFunctionsSpinner = (MaterialSpinner ) findViewById(R.id.spinner_mathematical_function);
+        final MaterialSpinner thirdSpinner = (MaterialSpinner ) findViewById(R.id.spinner_third_indicator);
+
+        final MaterialSpinner  firstMathFunctionSpinner = (MaterialSpinner ) findViewById(R.id.spinner_first_math_function);
+        final MaterialSpinner  secondMathFunctionSpinner = (MaterialSpinner ) findViewById(R.id.spinner_second_math_function);
         Button button = findViewById(R.id.ACI_Button);
 
         setupFISpinner(firstSpinner);
         setupFISpinner(secondSpinner);
+        setupFISpinner(thirdSpinner);
 
-        setupMFspinner(mathematicalFunctionsSpinner, R.array.mathematical_functions);
-
+        setupMFspinner(firstMathFunctionSpinner, R.array.mathematical_functions);
+        setupMFspinner(secondMathFunctionSpinner, R.array.mathematical_functions);
 
         stockNameTv.setText(STOCKNAME);
         stockNameAbbrTv.setText(STOCKABBR);
@@ -60,23 +63,39 @@ public class CustomIndicatorActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                String[] array = getResources().getStringArray(R.array.financial_indicators);
-                String firstElement = array[firstSpinner.getSelectedIndex()];
-                String secondElement = array[secondSpinner.getSelectedIndex()];
+                if (firstSpinner.getSelectedIndex()==0){
+                    Utils.makeToast(getApplicationContext(),"Please Select at least one indicator");
+                }else if(firstSpinner.getSelectedIndex()!=0 && secondSpinner.getSelectedIndex()!=0 && secondMathFunctionSpinner.getSelectedIndex()==0){
+                    Utils.makeToast(getApplicationContext(), "Please select a mathematical function");
+                }else {
+                    String[] array = getResources().getStringArray(R.array.financial_indicators);
+                    String firstElement = array[firstSpinner.getSelectedIndex()];
+                    String secondElement = array[secondSpinner.getSelectedIndex()];
+                    String thirdElement = array[thirdSpinner.getSelectedIndex()];
 
-                String[] array2 = getResources().getStringArray(R.array.mathematical_functions);
-                String mathematicalFunction = array2[mathematicalFunctionsSpinner.getSelectedIndex()];
+                    String[] array2 = getResources().getStringArray(R.array.mathematical_functions);
 
-                NewIndicator newIndicator =  new NewIndicator();
-                Intent intent = newIndicator.getIntent(CustomIndicatorActivity.this);
-                intent.putExtra("companyAbbr",STOCKABBR);
-                intent.putExtra("companyName",STOCKNAME);
-                intent.putExtra("firstSpinner_value",firstElement);
-                intent.putExtra("secondSpinner_value",secondElement);
-                intent.putExtra("thirdSpinner_value",mathematicalFunction);
+                    String firstMathFunction = array2[firstMathFunctionSpinner.getSelectedIndex()];
+                    String secondMathFunction = array2[secondMathFunctionSpinner.getSelectedIndex()];
 
+                    NewIndicator newIndicator = new NewIndicator();
+                    Intent intent = newIndicator.getIntent(CustomIndicatorActivity.this);
 
-                CustomIndicatorActivity.this.startActivity(intent);
+                    intent.putExtra(Utils.COMPANY_ABBR, STOCKABBR);
+                    intent.putExtra(Utils.COMPANY_NAME, STOCKNAME);
+                    intent.putExtra(Utils.FIRST_ELEMENT, firstElement);
+                    intent.putExtra(Utils.SECOND_ELEMENT, secondElement);
+                    intent.putExtra(Utils.FIRST_MATH_FUNCTION, firstMathFunction);
+                    if (thirdSpinner.getSelectedIndex()!=0 || secondMathFunctionSpinner.getSelectedIndex()!=0){
+                        intent.putExtra(Utils.HAS_THIRD_ELEMENT,true);
+                        intent.putExtra(Utils.THIRD_ELEMENT, thirdElement);
+                        intent.putExtra(Utils.SECOND_MATH_FUNCTION, secondMathFunction);
+                    }else{
+                        intent.putExtra(Utils.HAS_THIRD_ELEMENT,false);
+                    }
+
+                    CustomIndicatorActivity.this.startActivity(intent);
+                }
             }
         });
 

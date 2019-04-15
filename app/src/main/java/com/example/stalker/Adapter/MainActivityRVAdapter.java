@@ -36,10 +36,7 @@ public class MainActivityRVAdapter extends RecyclerView.Adapter<MainActivityRVAd
 
         View contactView = inflater.inflate(R.layout.item_stock, viewGroup, false);
 
-//        // Return a new holder instance
-//        ViewHolder viewHolder = new ViewHolder(contactView);
-//        return viewHolder;
-            return new ViewHolder(contactView);
+        return new ViewHolder(contactView);
 
     }
 
@@ -73,10 +70,15 @@ public class MainActivityRVAdapter extends RecyclerView.Adapter<MainActivityRVAd
         return favoriteStocks.size();
     }
 
+    public void setClickListener(ItemClickListener itemClickListener) {
+        Utils.print("setclickListener");
+        this.mClickListener = itemClickListener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
          TextView stockNameTv, stockSymbolTv, stockPriceTv;
 
-         ViewHolder(View itemView) {
+         public ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
@@ -84,9 +86,6 @@ public class MainActivityRVAdapter extends RecyclerView.Adapter<MainActivityRVAd
             stockSymbolTv = itemView.findViewById(R.id.stock_symbol_tv);
             stockPriceTv = itemView.findViewById(R.id.stock_price_tv);
             itemView.setOnClickListener(this);
-
-
-
         }
 
         @Override
@@ -102,14 +101,15 @@ public class MainActivityRVAdapter extends RecyclerView.Adapter<MainActivityRVAd
     }
 
     // allows clicks events to be caught
-    public void setClickListener(ItemClickListener itemClickListener) {
-        Utils.print("setclickListener");
-        this.mClickListener = itemClickListener;
-    }
 
     // parent activity will implement this method to respond to click events
+
+
+
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
 
-    }
+
+
+}

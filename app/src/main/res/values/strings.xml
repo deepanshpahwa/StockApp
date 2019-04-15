@@ -23,19 +23,20 @@
     <string name="title_new_indicator_activity">New Indicator</string>
     <string name="alphavantage_time_series_daily">TIME_SERIES_DAILY</string>
     <string name="title_save_indicator_activity">Save Custom Indicator</string>
+    <string name="saved_indicators">Saved Indicators</string>
 
     <string-array name="financial_indicators">
         <item>Select One</item>
-        <item>MACD</item>
+        <item>MAC-D</item>
         <item>Bollinger Bands(Upper)</item>
         <item>Bollinger Bands(Middle)</item>
         <item>Bollinger Bands(Lower)</item>
     </string-array>
     <string-array name="mathematical_functions">
         <item>Select One</item>
-        <item>+</item>
-        <item>-</item>
-        <item>x</item>
-        <item>/</item>
+        <item> + </item>
+        <item> - </item>
+        <item> x </item>
+        <item> / </item>
     </string-array>
 </resources>
