@@ -2,10 +2,13 @@ package com.example.stalker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.stalker.Adapter.SavedIndicatorRVAdapter;
@@ -15,7 +18,7 @@ import com.example.stalker.Bean.ListOFCustomIndicatorsBean;
 import androidx.annotation.Nullable;
 import io.realm.Realm;
 
-public class SavedIndicatorActivity extends Activity implements SavedIndicatorRVAdapter.ItemClickListener{
+public class SavedIndicatorActivity extends AppCompatActivity implements SavedIndicatorRVAdapter.ItemClickListener{
     private static String STOCKABBR;
     private static String STOCKNAME ;
     private SavedIndicatorRVAdapter adapter;
@@ -36,6 +39,9 @@ public class SavedIndicatorActivity extends Activity implements SavedIndicatorRV
             STOCKNAME =bundle.getString("companyName");
         }
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.ASI_my_toolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
 
 //        Utils.setToolbar(SavedIndicatorActivity.this);
 //        Toolbar toolbar = findViewById(R.id.toolbar);

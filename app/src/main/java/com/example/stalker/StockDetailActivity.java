@@ -3,7 +3,9 @@ package com.example.stalker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,10 +17,6 @@ import com.example.stalker.Bean.BollingerTechnicalData;
 import com.example.stalker.Bean.Bollinger_Bean;
 import com.example.stalker.Bean.MACD_Bean;
 import com.example.stalker.Bean.MACD_TechnicalData;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,19 +44,18 @@ public class StockDetailActivity extends AppCompatActivity {
         return intent;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_detail);
         Bundle bundle = getIntent().getExtras();
 
-
-
-
         if (bundle.getString("companyAbbr") != null){
             STOCKABBR =bundle.getString("companyAbbr");
             STOCKNAME =bundle.getString("companyName");
         }
+
 
         Utils.setToolbar(this);
 
@@ -77,7 +74,16 @@ public class StockDetailActivity extends AppCompatActivity {
         indicator1Tv.setText("Bollinger Bands");
         indicator2Tv.setText("MACD");
 
-        getData(STOCKABBR,getString(R.string.stock_interval), "open", "200");
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.AlphaVantageAPI_BaseURL))
+                .addConverterFactory(GsonConverterFactory.create()).build();
+
+        AlphaVantageAPI alphaVantageAPI = retrofit.create(AlphaVantageAPI.class);
+        final String strDate = Utils.getLatestBusinessDayDate();
+        Utils.print(strDate);
+
+        getMACDData(strDate, alphaVantageAPI, STOCKABBR,getString(R.string.stock_interval), "open", "200");
+        getBollingerData(strDate, alphaVantageAPI, STOCKABBR,getString(R.string.stock_interval), "open", "200");
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,15 +98,7 @@ public class StockDetailActivity extends AppCompatActivity {
 
     }
 
-    private void getData(String symbol, String interval, String series_type, String time_period) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.AlphaVantageAPI_BaseURL))
-                .addConverterFactory(GsonConverterFactory.create()).build();
-
-        final String strDate = Utils.getLatestBusinessDayDate();
-        Utils.print(strDate);
-
-        AlphaVantageAPI alphaVantageAPI = retrofit.create(AlphaVantageAPI.class);
+    private void getMACDData(final String strDate, AlphaVantageAPI alphaVantageAPI, String symbol, String interval, String series_type, String time_period) {
 
         Call<MACD_Bean> MACD_call =  alphaVantageAPI.getMacdFromSearchQuery("MACD", symbol , interval, series_type, getString(R.string.Alpha_Vantage_API_key) );
         MACD_call.enqueue(new Callback<MACD_Bean>() {
@@ -109,25 +107,15 @@ public class StockDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
                     Utils.print("pulling MACD data");
-//                    MACD_TechnicalData data = response.body().getMap().get("2019-03-08");//TODO get current date
-
                     MACD_TechnicalData macdValues = response.body().getMap().get(strDate);
 
                     try{
                         macdValue1Tv.setText(macdValues.getMACD());
-
                     }catch (Exception e){
-//                        indicator1Tv.setText("NA");
                         macdValue1Tv.setText("NA");
                         Log.e("MACD on rsponse",e.getMessage());
                         Utils.makeSnackBar(findViewById(R.id.coordinatorLayout),"There was an error getting information on this stock", Snackbar.LENGTH_LONG);
                     }
-//                    if (macdValues!=null) {
-//                        macdValue1Tv.setText(macdValues.getMACD());
-//                    }else{
-//                        Utils.makeSnackBar(findViewById(R.id.coordinatorLayout),"There was an error getting information on this stock", Snackbar.LENGTH_LONG);
-//                    }
-//                Utils.print(data.getMACD()+", "+data.getMACDSignal());
                 }
             }
 
@@ -136,9 +124,11 @@ public class StockDetailActivity extends AppCompatActivity {
                 Utils.print("failed to pull data for this stock");
             }
         });
+    }
 
+    private void getBollingerData(final String strDate, AlphaVantageAPI alphaVantageAPI, String symbol, String interval, String series_type, String time_period) {
 
-        final Call<Bollinger_Bean> bollinger_call = alphaVantageAPI.getBollingerFromSearchQuery("BBANDS", symbol, interval, time_period, series_type, getString(R.string.Alpha_Vantage_API_key));
+        Call<Bollinger_Bean> bollinger_call = alphaVantageAPI.getBollingerFromSearchQuery("BBANDS", symbol, interval, time_period, series_type, getString(R.string.Alpha_Vantage_API_key));
         bollinger_call.enqueue(new Callback<Bollinger_Bean>() {
             @Override
             public void onResponse(Call<Bollinger_Bean> call, Response<Bollinger_Bean> response) {
@@ -167,10 +157,6 @@ public class StockDetailActivity extends AppCompatActivity {
         });
 
 
-
-//        Call<MACD_Bean> call2 = alphaVantageAPI.getBollingerFromSearchQuery();
     }
-
-
 
 }

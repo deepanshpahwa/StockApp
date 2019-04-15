@@ -2,8 +2,11 @@ package com.example.stalker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +42,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class NewIndicator extends Activity{
+public class NewIndicator extends AppCompatActivity {
 
     private static String STOCKABBR = "";
     private static String STOCKNAME = "";
@@ -84,6 +87,10 @@ public class NewIndicator extends Activity{
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_indicator);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.ANI_my_toolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
 
 //        Utils.setToolbar(NewIndicator);
         realm = Realm.getDefaultInstance();
@@ -180,7 +187,6 @@ public class NewIndicator extends Activity{
                 if (response.isSuccessful()) {
 
                     DataPoint[] dataPointsprice = new DataPoint[NUMBER_OF_DATAPOINTS];
-
                     ArrayList<String> temp = new ArrayList<>(NUMBER_OF_DATAPOINTS);
                     int index = 0;
                     for (Map.Entry<String, StockPriceData> entry : response.body().getMap().entrySet()){
@@ -194,9 +200,7 @@ public class NewIndicator extends Activity{
                     int indexi=0;
                     for (String entry:temp){
                         if (indexi >= NUMBER_OF_DATAPOINTS){break;}
-
                         dataPointsprice[indexi] = new DataPoint(Utils.parseDateForChart(entry),Double.valueOf(response.body().getMap().get(entry).get1Open()));//TODO
-
                         indexi++;
                     }
                     Utils.print(String.valueOf(indexi));
@@ -264,15 +268,15 @@ public class NewIndicator extends Activity{
     }
 
     private void performMathematicalFunction() {
+        Utils.print("SIZE of HASHMAPS: "+MACD_hashMap.size()+"   ,  "+Bollinger_hashMap.size());
+
+
         if (Bollinger_hashMap==null || MACD_hashMap==null || Bollinger_hashMap.size()==0 || MACD_hashMap.size()==0){
             return;
         }
 
 
-        Utils.print("SIZE of HASHMAPS: "+MACD_hashMap.size()+"   ,  "+Bollinger_hashMap.size());
         DataPoint[] dataPoints = new DataPoint[NUMBER_OF_DATAPOINTS];
-
-
 
         ArrayList<String> temp = new ArrayList<>();
         int index = 0;
@@ -452,17 +456,17 @@ public class NewIndicator extends Activity{
         });
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        super.onStop();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onPause();
-        super.onStop();
-        super.onDestroy();
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        super.onStop();
+//        super.onDestroy();//TODO fix
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onPause();
+//        super.onStop();
+//        super.onDestroy();//TODO fix
+//    }
 }

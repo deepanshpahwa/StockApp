@@ -78,8 +78,10 @@ public class Utils {
             calendar.add(Calendar.DATE, -1);
         }else if (calendar.get(Calendar.DAY_OF_WEEK) == 1){
             calendar.add(Calendar.DATE, -2);
+        }else if (calendar.get(Calendar.DAY_OF_WEEK) == 2){
+            calendar.add(Calendar.DATE, -3);
         }
-        calendar.add(Calendar.DATE,-1);
+        calendar.add(Calendar.DATE,-1);// TODO  DONE   Add -3 for Monday because Monday -1 is sunday
 
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
