@@ -137,8 +137,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityRVAda
                 MainActivity.this.startActivity(intent);
             case R.id.show_saved_indicators:
                 //open the settings page
-                SavedIndicatorActivity savedIndicatorActivity = new SavedIndicatorActivity();
-                Intent intent2 = savedIndicatorActivity.getIntent(MainActivity.this);
+                Intent intent2 = new Intent(MainActivity.this, FavoriteStocks.class);
                 MainActivity.this.startActivity(intent2);
             default:
                 return super.onOptionsItemSelected(item);

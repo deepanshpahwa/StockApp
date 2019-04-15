@@ -64,7 +64,7 @@ public class SavedIndicatorActivity extends AppCompatActivity implements SavedIn
         //open newIndicator
 
         Utils.print("HHHHSIA :OnITemClick");
-        NewIndicator newIndicator = new NewIndicator(false);
+        NewIndicator newIndicator = new NewIndicator();
         Intent i = newIndicator.getIntent(SavedIndicatorActivity.this);
 
         //todo this needs to be added
@@ -81,6 +81,8 @@ public class SavedIndicatorActivity extends AppCompatActivity implements SavedIn
             i.putExtra(Utils.SECOND_MATH_FUNCTION, object.getSecondMathFunction());
             i.putExtra(Utils.THIRD_ELEMENT, object.getThirdElement());
         }
+
+        i.putExtra("hideButton", true);
         SavedIndicatorActivity.this.startActivity(i);
     }
 }

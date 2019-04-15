@@ -20,15 +20,14 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/SI_recyclerview"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="646dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/ASI_my_toolbar" />
 
 </android.support.constraint.ConstraintLayout>

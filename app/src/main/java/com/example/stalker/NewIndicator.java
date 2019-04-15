@@ -57,15 +57,13 @@ public class NewIndicator extends AppCompatActivity {
     private static Map<String, BollingerTechnicalData> Bollinger_hashMap = new HashMap<>();
     private static int NUMBER_OF_DATAPOINTS = 50;
     Realm realm;
-    boolean showButton;
+    boolean hideButton;
 
-    public NewIndicator(boolean showSaveButton) {
-        if (showSaveButton) {
-            showButton = showSaveButton;
-        }
-    }
     public NewIndicator() {
-        showButton=true;
+    }
+
+    public void hideButton(boolean hideButton){
+        this.hideButton = hideButton;
     }
 
 
@@ -111,20 +109,23 @@ public class NewIndicator extends AppCompatActivity {
                 SECOND_MATH_FUNCTION = bundle.getString(Utils.SECOND_MATH_FUNCTION);
             }
 
+            hideButton = bundle.getBoolean("hideButton");
+
         }
 
         final EditText savedName = findViewById(R.id.saved_name_ANI);
+        Button submit = findViewById(R.id.NI_button);
+        if (hideButton){
+            submit.setVisibility(View.INVISIBLE);
+            savedName.setVisibility(View.INVISIBLE);
+        }
 
         loadIndicatorChart(STOCKABBR,getString(R.string.stock_interval), "open", "200");
         loadPriceChart(STOCKABBR);
 
 
 
-        Button submit = findViewById(R.id.NI_button);
-        if (!showButton){
-            submit.setVisibility(View.INVISIBLE);
-            savedName.setVisibility(View.INVISIBLE);
-        }
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -359,6 +360,172 @@ public class NewIndicator extends AppCompatActivity {
 
     }
 
+    private void performMathematicalFunction2() {
+        Utils.print("SIZE of HASHMAPS: "+MACD_hashMap.size()+"   ,  "+Bollinger_hashMap.size());
+
+
+        if (Bollinger_hashMap==null || MACD_hashMap==null || Bollinger_hashMap.size()==0 || MACD_hashMap.size()==0){
+            return;
+        }
+
+
+        DataPoint[] dataPoints = new DataPoint[NUMBER_OF_DATAPOINTS];
+
+        ArrayList<String> temp = new ArrayList<>();
+        int index = 0;
+        for (Map.Entry<String, MACD_TechnicalData> entry : MACD_hashMap.entrySet()){
+            if (index>=NUMBER_OF_DATAPOINTS){break;}
+            temp.add(entry.getKey());
+            index++;
+        }
+
+        Collections.sort(temp);
+
+        if (FIRST_MATH_FUNCTION.equals("+") && SECOND_MATH_FUNCTION.equals("+")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) + Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  + Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("+") && SECOND_MATH_FUNCTION.equals("-")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) + Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  - Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("+") && SECOND_MATH_FUNCTION.equals("x")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) + Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  * Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("+") && SECOND_MATH_FUNCTION.equals("/")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) + Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi))) / Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }
+
+
+
+        // FI -
+        else if (FIRST_MATH_FUNCTION.equals("-") && SECOND_MATH_FUNCTION.equals("+")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) + Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  + Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("-") && SECOND_MATH_FUNCTION.equals("-")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) + Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  - Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("-") && SECOND_MATH_FUNCTION.equals("x")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) + Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  * Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("-") && SECOND_MATH_FUNCTION.equals("/")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) + Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi))) / Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }
+
+        //FI *
+        if (FIRST_MATH_FUNCTION.equals("x") && SECOND_MATH_FUNCTION.equals("+")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) * Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  + Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("x") && SECOND_MATH_FUNCTION.equals("-")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) * Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  - Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("x") && SECOND_MATH_FUNCTION.equals("x")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) * Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  * Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("x") && SECOND_MATH_FUNCTION.equals("/")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) * Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi))) / Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }
+
+        //FI /
+
+        if (FIRST_MATH_FUNCTION.equals("/") && SECOND_MATH_FUNCTION.equals("+")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) / Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  + Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("/") && SECOND_MATH_FUNCTION.equals("-")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) / Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  - Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("/") && SECOND_MATH_FUNCTION.equals("x")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) / Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi)))  * Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }else if (FIRST_MATH_FUNCTION.equals("/") && SECOND_MATH_FUNCTION.equals("/")){
+            int indexi=0;
+            for (String entry:temp){
+                if (indexi >= NUMBER_OF_DATAPOINTS)break;
+                Double sum = Double.valueOf(  getValueFromIndicatorAndKey(FIRST_INDICATOR, temp.get(indexi)) ) / Double.valueOf(getValueFromIndicatorAndKey(SECOND_INDICATOR, temp.get(indexi))) / Double.valueOf(getValueFromIndicatorAndKey(THIRD_INDICATOR,temp.get(indexi)));
+                dataPoints[indexi] = new DataPoint(Utils.parseDateForChart(entry),sum);
+                indexi++;
+            }
+        }
+        loadCustomIndicatorChart(dataPoints,R.id.new_graph_view);
+
+    }
+
     Double getValueFromIndicatorAndKey(String indicator, String key){
         if (indicator == Utils.MACD){
             try {
@@ -407,7 +574,11 @@ public class NewIndicator extends AppCompatActivity {
                     try {
                         updateBollingerHashMap(response.body().getMap());
 //                        Bollinger_hashMap = response.body().getMap();
-                        performMathematicalFunction();
+                        if (HAS_THIRD_INDICATOR){
+                            performMathematicalFunction2();
+                        }else {
+                            performMathematicalFunction();
+                        }
                     }catch (Exception e){
                         e.printStackTrace();
                         Utils.makeSnackBar(findViewById(R.id.ANI_coordinator_layout),"There was an error getting information on this stock", Snackbar.LENGTH_LONG);
@@ -441,8 +612,11 @@ public class NewIndicator extends AppCompatActivity {
 
                     try{
                         updateMACDHashMap(response.body().getMap());
-                        performMathematicalFunction();
-                    }catch (Exception e){
+                        if (HAS_THIRD_INDICATOR){
+                            performMathematicalFunction2();
+                        }else {
+                            performMathematicalFunction();
+                        }                    }catch (Exception e){
                         e.printStackTrace();
                             Utils.makeSnackBar(findViewById(R.id.ANI_coordinator_layout),"There was an error getting information on this stock", Snackbar.LENGTH_LONG);
                     }

@@ -42,19 +42,22 @@ public class MainActivityRVAdapter extends RecyclerView.Adapter<MainActivityRVAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+        try {
+            String stockName = stocks.get(favoriteStocks.get(position)).getQuote().getCompanyName();
+            String stockSymbol = stocks.get(favoriteStocks.get(position)).getQuote().getSymbol();
+            String stockPrice = "$" + stocks.get(favoriteStocks.get(position)).getQuote().getLatestPrice().toString();
 
-        String stockName =  stocks.get(favoriteStocks.get(position)).getQuote().getCompanyName();
-        String stockSymbol = stocks.get(favoriteStocks.get(position)).getQuote().getSymbol();
-        String stockPrice = "$"+stocks.get(favoriteStocks.get(position)).getQuote().getLatestPrice().toString();
-
-        TextView stockNameTv = viewHolder.stockNameTv;
-        TextView stockSymbolTv = viewHolder.stockSymbolTv;
-        TextView stockPriceTv = viewHolder.stockPriceTv;
+            TextView stockNameTv = viewHolder.stockNameTv;
+            TextView stockSymbolTv = viewHolder.stockSymbolTv;
+            TextView stockPriceTv = viewHolder.stockPriceTv;
 
 
-        stockNameTv.setText(stockName);
-        stockSymbolTv.setText(stockSymbol);
-        stockPriceTv.setText(stockPrice);
+            stockNameTv.setText(stockName);
+            stockSymbolTv.setText(stockSymbol);
+            stockPriceTv.setText(stockPrice);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
 

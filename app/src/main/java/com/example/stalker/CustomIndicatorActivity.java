@@ -74,7 +74,11 @@ public class CustomIndicatorActivity extends AppCompatActivity {
 
                 if (firstSpinner.getSelectedIndex()==0){
                     Utils.makeToast(getApplicationContext(),"Please Select at least one indicator");
-                }else if(firstSpinner.getSelectedIndex()!=0 && secondSpinner.getSelectedIndex()!=0 && secondMathFunctionSpinner.getSelectedIndex()==0){
+                }else if(firstSpinner.getSelectedIndex()!=0 && secondSpinner.getSelectedIndex()!=0 && firstMathFunctionSpinner.getSelectedIndex()==0){
+                    Utils.makeToast(getApplicationContext(), "Please select a mathematical function");
+                }else if(firstSpinner.getSelectedIndex()!=0 && secondSpinner.getSelectedIndex()!=0 && thirdSpinner.getSelectedIndex()!=0 && firstMathFunctionSpinner.getSelectedIndex()==0){
+                    Utils.makeToast(getApplicationContext(), "Please select a mathematical function");
+                }else if(firstSpinner.getSelectedIndex()!=0 && secondSpinner.getSelectedIndex()!=0 && thirdSpinner.getSelectedIndex()!=0 && secondMathFunctionSpinner.getSelectedIndex()==0){
                     Utils.makeToast(getApplicationContext(), "Please select a mathematical function");
                 }else {
                     String[] array = getResources().getStringArray(R.array.financial_indicators);
@@ -102,6 +106,9 @@ public class CustomIndicatorActivity extends AppCompatActivity {
                     }else{
                         intent.putExtra(Utils.HAS_THIRD_ELEMENT,false);
                     }
+
+                    intent.putExtra("hideButton", false);
+
 
                     CustomIndicatorActivity.this.startActivity(intent);
                 }
