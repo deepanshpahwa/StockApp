@@ -3,10 +3,9 @@ package com.example.stalker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -56,8 +55,10 @@ public class StockDetailActivity extends AppCompatActivity {
             STOCKNAME =bundle.getString("companyName");
         }
 
-
-        Utils.setToolbar(this);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.ASD_my_toolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar));
+//        Utils.setToolbar(this);
 
         stockNameTv = findViewById(R.id.ASD_company_name);
         stockNameAbbrTv = findViewById(R.id.ASD_company_abbr);

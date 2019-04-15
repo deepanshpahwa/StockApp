@@ -33,7 +33,7 @@ public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQu
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        myToolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
+        myToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar));
 
         recyclerView = findViewById(R.id.stock_rv);
 

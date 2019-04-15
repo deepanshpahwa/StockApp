@@ -45,12 +45,11 @@ public class Utils {
         System.out.println(":::::::::::"+s);
     }
 
-    public static void setToolbar(AppCompatActivity activity) {
-        activity.setContentView(R.layout.activity_stock_detail);
-        Toolbar toolbar = activity.findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
-        activity.setSupportActionBar(toolbar);
-    }
+//    public static void setToolbar(AppCompatActivity activity) {
+//        activity.setContentView(R.layout.activity_stock_detail);
+//        toolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
+//        activity.setSupportActionBar(toolbar);
+//    }
 //
 //    static void setToolbar(Activity activity) {
 //        activity.setContentView(R.layout.activity_stock_detail);

@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityRVAda
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        myToolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
+        myToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar));
 
 
         rvStocks = (RecyclerView) findViewById(R.id.rvStocks);

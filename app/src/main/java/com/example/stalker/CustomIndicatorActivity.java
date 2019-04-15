@@ -34,7 +34,7 @@ public class CustomIndicatorActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.ACI_my_toolbar);
         setSupportActionBar(myToolbar);
-        myToolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
+        myToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar));
 
         Bundle bundle = getIntent().getExtras();
         TextView stockNameTv,stockNameAbbrTv;

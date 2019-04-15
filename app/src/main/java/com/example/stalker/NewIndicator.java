@@ -88,7 +88,7 @@ public class NewIndicator extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.ANI_my_toolbar);
         setSupportActionBar(myToolbar);
-        myToolbar.setBackgroundColor(Color.parseColor("#A9A9A9"));
+        myToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar));
 
 //        Utils.setToolbar(NewIndicator);
         realm = Realm.getDefaultInstance();
