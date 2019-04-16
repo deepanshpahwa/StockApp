@@ -2,7 +2,6 @@ package com.example.stalker;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -61,11 +60,11 @@ public class SavedIndicatorActivity extends AppCompatActivity implements SavedIn
 
     @Override
     public void onItemClick(View view, int position) {
-        //open newIndicator
+        //open customIndicatorActivity
 
         Utils.print("HHHHSIA :OnITemClick");
-        NewIndicator newIndicator = new NewIndicator();
-        Intent i = newIndicator.getIntent(SavedIndicatorActivity.this);
+        CustomIndicatorActivity customIndicatorActivity = new CustomIndicatorActivity();
+        Intent i = customIndicatorActivity.getIntent(SavedIndicatorActivity.this);
 
         //todo this needs to be added
         i.putExtra("companyAbbr", STOCKABBR);

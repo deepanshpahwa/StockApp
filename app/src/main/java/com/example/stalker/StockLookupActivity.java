@@ -1,6 +1,5 @@
 package com.example.stalker;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,7 +19,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQueryTextListener  {
+public class StockLookupActivity extends AppCompatActivity implements SearchView.OnQueryTextListener  {
 
     FavoriteStocksRVAdapter rvAdapter ;
     ListOfBestMatches listOfBestMatches = null;
@@ -29,7 +28,7 @@ public class FavoriteStocks extends AppCompatActivity implements SearchView.OnQu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acivity_favorite_stocks);
+        setContentView(R.layout.acivity_stock_lookup);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);

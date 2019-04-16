@@ -2,7 +2,6 @@ package com.example.stalker;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
-public class CustomIndicatorActivity extends AppCompatActivity {
+public class NewIndicatorInterfaceActivity extends AppCompatActivity {
 
     private static String STOCKABBR;
     private static String STOCKNAME;
@@ -28,7 +27,7 @@ public class CustomIndicatorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_indicator);
+        setContentView(R.layout.activity_new_indicator_interface);
 
 
 
@@ -91,8 +90,8 @@ public class CustomIndicatorActivity extends AppCompatActivity {
                     String firstMathFunction = array2[firstMathFunctionSpinner.getSelectedIndex()];
                     String secondMathFunction = array2[secondMathFunctionSpinner.getSelectedIndex()];
 
-                    NewIndicator newIndicator = new NewIndicator();
-                    Intent intent = newIndicator.getIntent(CustomIndicatorActivity.this);
+                    CustomIndicatorActivity customIndicatorActivity = new CustomIndicatorActivity();
+                    Intent intent = customIndicatorActivity.getIntent(NewIndicatorInterfaceActivity.this);
 
                     intent.putExtra(Utils.COMPANY_ABBR, STOCKABBR);
                     intent.putExtra(Utils.COMPANY_NAME, STOCKNAME);
@@ -110,7 +109,7 @@ public class CustomIndicatorActivity extends AppCompatActivity {
                     intent.putExtra("hideButton", false);
 
 
-                    CustomIndicatorActivity.this.startActivity(intent);
+                    NewIndicatorInterfaceActivity.this.startActivity(intent);
                 }
             }
         });

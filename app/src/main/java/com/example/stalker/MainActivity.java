@@ -2,7 +2,6 @@ package com.example.stalker;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -133,11 +132,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityRVAda
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_favorites:
-                Intent intent = new Intent(MainActivity.this, FavoriteStocks.class);
+                Intent intent = new Intent(MainActivity.this, StockLookupActivity.class);
                 MainActivity.this.startActivity(intent);
             case R.id.show_saved_indicators:
                 //open the settings page
-                Intent intent2 = new Intent(MainActivity.this, FavoriteStocks.class);
+                Intent intent2 = new Intent(MainActivity.this, StockLookupActivity.class);
                 MainActivity.this.startActivity(intent2);
             default:
                 return super.onOptionsItemSelected(item);

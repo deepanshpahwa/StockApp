@@ -89,8 +89,8 @@ public class StockDetailActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomIndicatorActivity customIndicatorActivity = new CustomIndicatorActivity();
-                Intent intent= customIndicatorActivity.getIntent(StockDetailActivity.this);
+                NewIndicatorInterfaceActivity newIndicatorInterfaceActivity = new NewIndicatorInterfaceActivity();
+                Intent intent= newIndicatorInterfaceActivity.getIntent(StockDetailActivity.this);
                 intent.putExtra("companyAbbr",STOCKABBR);
                 intent.putExtra("companyName",STOCKNAME);
                 StockDetailActivity.this.startActivity(intent);
