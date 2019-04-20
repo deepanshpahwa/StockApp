@@ -16,4 +16,4 @@ the appropriate box and clicking the 'Generate Financial Indiactor' button, the 
 the value of the custom financial indicator vs the date and the graph on the bottom is of the price of the stock vs the date. Both these graphs show data of
 the past three months. If the user finds this new financial indicator helpful, they can save this finanical indicator using a name.
 
-![](screenshots/MainActivity.png){:height="25px" width="25px"}
+![test image size](screenshots/MainActivity.png){:height="25px" width="25px"}
