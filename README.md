@@ -17,5 +17,9 @@ the value of the custom financial indicator vs the date and the graph on the bot
 the past three months. If the user finds this new financial indicator helpful, they can save this finanical indicator using a name.
 
 <img src="https://github.com/deepanshpahwa/StockApp/blob/master/screenshots/MainActivity.png" width="400" height="790">
+<img src="https://github.com/deepanshpahwa/StockApp/blob/master/screenshots/stockInfo.png" width="400" height="790">
+<img src="https://github.com/deepanshpahwa/StockApp/blob/master/screenshots/newindicatorinterface.png" width="400" height="790">
+<img src="https://github.com/deepanshpahwa/StockApp/blob/master/screenshots/customIndicator.png" width="400" height="790">
+<img src="https://github.com/deepanshpahwa/StockApp/blob/master/screenshots/savedActivity.png" width="400" height="790">
 
 
