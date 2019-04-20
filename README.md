@@ -15,3 +15,11 @@ the startup page. On selecting a stock, the app prompts the user to select two o
 the appropriate box and clicking the 'Generate Financial Indiactor' button, the app opens up a new page consisting of 2 line graphs. The graph on the top is 
 the value of the custom financial indicator vs the date and the graph on the bottom is of the price of the stock vs the date. Both these graphs show data of
 the past three months. If the user finds this new financial indicator helpful, they can save this finanical indicator using a name.
+
+<img src="https://github.com/deepanshpahwa/StockApp/blob/master/screenshots/MainActivity.png" width="400" height="790">
+<img src="https://github.com/deepanshpahwa/StockApp/blob/master/screenshots/stockInfo.png" width="400" height="790">
+<img src="https://github.com/deepanshpahwa/StockApp/blob/master/screenshots/newindicatorinterface.png" width="400" height="790">
+<img src="https://github.com/deepanshpahwa/StockApp/blob/master/screenshots/customIndicator.png" width="400" height="790">
+<img src="https://github.com/deepanshpahwa/StockApp/blob/master/screenshots/savedActivity.png" width="400" height="790">
+
+
